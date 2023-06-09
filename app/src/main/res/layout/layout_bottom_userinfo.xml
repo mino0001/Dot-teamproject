@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/user_info_page"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+    <ImageView
+        android:id="@+id/iv_user_qr"
+        android:layout_width="180dp"
+        android:layout_height="172dp"
+        android:layout_marginTop="35dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/icon_qr" />
+
+    <TextView
+        android:id="@+id/tv_wallet_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Wallet Address"
+        app:layout_constraintEnd_toEndOf="@+id/iv_user_qr"
+        app:layout_constraintStart_toStartOf="@+id/iv_user_qr"
+        app:layout_constraintTop_toBottomOf="@+id/tv_user_issue_date" />
+
+    <TextView
+        android:id="@+id/tv_user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Team BYM"
+        app:layout_constraintEnd_toEndOf="@+id/iv_user_qr"
+        app:layout_constraintStart_toEndOf="@+id/tv_name"
+        app:layout_constraintTop_toBottomOf="@+id/iv_user_qr" />
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Name"
+        app:layout_constraintEnd_toStartOf="@+id/tv_user_name"
+        app:layout_constraintStart_toStartOf="@+id/iv_user_qr"
+        app:layout_constraintTop_toBottomOf="@+id/iv_user_qr" />
+
+    <TextView
+        android:id="@+id/tv_issue_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Issue Date"
+        app:layout_constraintEnd_toStartOf="@+id/tv_user_issue_date"
+        app:layout_constraintStart_toStartOf="@+id/iv_user_qr"
+        app:layout_constraintTop_toBottomOf="@+id/tv_name" />
+
+    <TextView
+        android:id="@+id/tv_user_issue_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="2023. 05. 22"
+        app:layout_constraintEnd_toEndOf="@+id/iv_user_qr"
+        app:layout_constraintStart_toEndOf="@+id/tv_issue_date"
+        app:layout_constraintTop_toBottomOf="@+id/tv_user_name" />
+
+    <TextView
+        android:id="@+id/tv_user_wallet_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        android:text="thisis13wallet437address3235youknow"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/layout_copy"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_wallet_address" />
+
+<LinearLayout
+    android:id="@+id/layout_copy"
+    android:layout_width="48dp"
+    android:layout_height="48dp"
+    android:gravity="center"
+    app:layout_constraintBottom_toBottomOf="@+id/tv_user_wallet_address"
+    app:layout_constraintStart_toEndOf="@+id/tv_user_wallet_address"
+    tools:ignore="SpeakableTextPresentCheck"
+    >
+    <ImageButton
+        android:id="@+id/iv_copy"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="8dp"
+        android:background="@android:color/transparent"
+        android:scaleType="centerCrop"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/icon_copy"
+        tools:ignore="SpeakableTextPresentCheck"
+        android:onClick="copyToClipboard"
+        />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+

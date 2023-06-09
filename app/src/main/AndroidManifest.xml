@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" >
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:hardwareAccelerated="true"
+        android:icon="@mipmap/ic_launcher_logo"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_logo_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.App_ui"
+        tools:targetApi="31"
+        >
+        <activity
+            android:name=".HomeuserActivity"
+            android:exported="false"
+            android:label="@string/title_activity_homeuser"
+            android:theme="@style/Theme.App_ui" />
+        <activity
+            android:name=".MoreinfoActivity"
+            android:exported="false"
+            android:label="@string/title_activity_moreinfo"
+            android:theme="@style/Theme.App_ui" />
+        <activity
+            android:name=".QrnftActivity"
+            android:exported="false"
+            android:label="@string/title_activity_qrnft"
+            android:theme="@style/Theme.App_ui" />
+        <activity
+            android:name=".Send2Activity"
+            android:exported="false"
+            android:label="@string/title_activity_send2"
+            android:theme="@style/Theme.App_ui" />
+        <activity
+            android:name=".SendActivity"
+            android:exported="false"
+            android:label="@string/title_activity_send"
+            android:theme="@style/Theme.App_ui" />
+        <activity
+            android:name=".Edit2Activity"
+            android:exported="false"
+            android:label="@string/title_activity_edit2"
+            android:theme="@style/Theme.App_ui" />
+        <activity
+            android:name=".EditActivity"
+            android:exported="false"
+            android:label="@string/title_activity_edit"
+            android:theme="@style/Theme.App_ui" />
+        <activity
+            android:name=".NotiActivity"
+            android:exported="false"
+            android:label="@string/title_activity_noti"
+            android:theme="@style/Theme.App_ui" />
+        <activity
+            android:name=".EditCategoryActivity"
+            android:exported="false"
+            android:label="@string/title_activity_category"
+            android:theme="@style/Theme.App_ui" />
+        <activity
+            android:name=".NftinfoActivity"
+            android:exported="false"
+            android:label="@string/title_activity_nftinfo"
+            android:theme="@style/Theme.App_ui" />
+        <activity
+            android:name="com.journeyapps.barcodescanner.CaptureActivity"
+            android:screenOrientation="fullSensor"
+            tools:replace="screenOrientation" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

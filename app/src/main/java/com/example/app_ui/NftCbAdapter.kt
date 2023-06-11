@@ -1,66 +1,91 @@
 package com.example.app_ui
 
-import android.util.SparseBooleanArray
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.example.app_ui.databinding.ActivitySendBinding
-import com.example.app_ui.databinding.ListNftItemBinding
 import com.example.app_ui.databinding.ListNftItemCbBinding
-import com.example.app_ui.databinding.ListNotiBinding
 
-class NftCbAdapter(val nftList: MutableList<Nft>) : RecyclerView.Adapter<NftCbAdapter.ViewHolder>() {
 
-    private lateinit var binding: ListNftItemCbBinding
-    private val checkboxStatus = SparseBooleanArray()
+//체크박스 있는 nft list adapter. send2_activity, edit_activity
+
+class NftCbAdapter(private val nftList: MutableList<Nft>, private val selectAllListener: () -> Unit) : RecyclerView.Adapter<NftCbAdapter.ViewHolder>() {
+
+    private val checkedItems = mutableListOf<Boolean>()  //check된 nft 넘김
+    private var isSelectAll = false
+    init {
+        for (i in nftList.indices) {
+            checkedItems.add(false)
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        binding = ListNftItemCbBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ListNftItemCbBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
 
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val item = nftList[position]
+        val isChecked = checkedItems[position]
+
+        holder.binding.cbNft.isChecked = isChecked
+        holder.binding.ivNft.setImageResource(item.img_nft)
+        holder.binding.tvNftAlias.text = item.alias
+        holder.binding.tvNftMore.text = item.more
+
         holder.bind(nftList[position])
 
         val layoutParams = holder.itemView.layoutParams
         layoutParams.height = 300
         holder.itemView.requestLayout()
+
+
+        holder.itemView.setOnClickListener {
+            val newCheckedState = !isChecked
+            holder.binding.cbNft.isChecked = newCheckedState
+            checkedItems[position] = newCheckedState
+        }
+
     }
 
     override fun getItemCount(): Int {
         return nftList.size
     }
 
+     fun selectAllItems() {
+         isSelectAll = true
+         checkedItems.fill(true)
+         notifyDataSetChanged()
+     }
+
+     fun deselectAllItems() {
+         isSelectAll = false
+         checkedItems.fill(false)
+         notifyDataSetChanged()
+    }
+
+    fun getSelectedItems() : MutableList<Boolean> {
+        return checkedItems
+    }
+
     inner class ViewHolder(val binding: ListNftItemCbBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        private lateinit var sendBinding: ActivitySendBinding
+        init {
+            binding.cbNft.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    val newCheckedState = binding.cbNft.isChecked
+                    checkedItems[position] = newCheckedState
 
-        fun bind(data: Nft) {
-            binding.ivNft.setImageResource(data.img_nft)
-            binding.tvNftAlias.text = data.alias
-            binding.tvNftMore.text = data.more
-            binding.cbNft.isChecked = data.is_checked
-
-            binding.lyNft.setOnClickListener { //layout 클릭 시 체크
-                binding.cbNft.isChecked = !(binding.cbNft.isChecked)
-
-                /*if (sendBinding.include.cbCategoryall.isChecked) { //전체 선택 상태에서 클릭
-                    sendBinding.include.cbCategoryall.isChecked = false
-                }*/
-
+                    if (isSelectAll && !newCheckedState) {
+                        isSelectAll = false
+                        selectAllListener()
+                    }
+                }
             }
-
-//            sendBinding.include.cbCategoryall.setOnClickListener {
-//                binding.cbNft.isChecked = sendBinding.include.cbCategoryall.isChecked
-//
-//            }
-
+        }
+        fun bind(data: Nft) {
         }
 
     }

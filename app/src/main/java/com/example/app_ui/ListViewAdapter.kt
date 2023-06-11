@@ -7,13 +7,13 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import com.example.app_ui.databinding.ListCategoryBinding
 
+// 카테고리 리스트
 
 class ListViewAdapter
     (val context : Context, val list : ArrayList<CategoryName>)
     : BaseAdapter()
  {
-
-          private lateinit var binding : ListCategoryBinding
+     private lateinit var binding : ListCategoryBinding
 
      override fun getCount(): Int {
          return list.size

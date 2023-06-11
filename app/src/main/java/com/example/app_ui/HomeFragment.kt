@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
@@ -16,7 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.app_ui.databinding.FragmentHomeBinding
-import com.google.android.material.snackbar.Snackbar
+
 
 
 val nftList = mutableListOf<Nft>()
@@ -27,11 +26,10 @@ lateinit var nftAdapter : NftAdapter
 class HomeFragment : Fragment() {
 
 
-    //뷰가 사라질 때 즉 메모리에서 날라갈 때 같이 날리기 위해 따로 빼두기
+    //뷰가 사라질 때, 즉 메모리에서 날라갈 때 같이 날리기 위해 따로 빼두기
     private var fragmentHomeBinding : FragmentHomeBinding? =null
     private var intent :Intent? = null
     companion object {
-        const val TAG : String = "로그"
 
         fun newInstance() : HomeFragment {
             return HomeFragment()
@@ -49,7 +47,7 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         fragmentHomeBinding!!.toolbar.inflateMenu(R.menu.toolbar_menu)
-       initRecycler()
+        initRecycler()
         setupCategorySpinnerHandler()
 
 
@@ -60,28 +58,33 @@ class HomeFragment : Fragment() {
 
         fragmentHomeBinding!!.toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
+                //사용자 정보
                 R.id.btn_tb_user -> {
                     intent = Intent(context, HomeuserActivity::class.java)
                     startActivity(intent)
 
                     true
                 }
+                //알림
                 R.id.btn_tb_noti -> {
                     intent = Intent(context, NotiActivity::class.java)
                     startActivity(intent)
                     true
                 }
-                R.id.tb_nft_new -> { //생성
+                //생성
+                R.id.tb_nft_new -> {
+                    intent = Intent(context, NewnftActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                //전송
+                R.id.tb_nft_send -> {
                     intent = Intent(context, SendActivity::class.java)
                     startActivity(intent)
                     true
                 }
-                R.id.tb_nft_send -> { //전송
-                    intent = Intent(context, SendActivity::class.java)
-                    startActivity(intent)
-                    true
-                }
-                R.id.tb_category_edit -> { //편집
+                //편집
+                R.id.tb_category_edit -> {
                     intent = Intent(context, EditActivity::class.java)
                     startActivity(intent)
                     true
@@ -91,13 +94,10 @@ class HomeFragment : Fragment() {
         }
     }
 
-    // 프레그먼트를 안고 있는 액티비티에 붙었을 때
     override fun onAttach(context: Context) {
         super.onAttach(context)
     }
 
-    // 뷰가 생성되었을 때
-    // 프레그먼트와 레이아웃을 연결시켜주는 부분이다.
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -120,17 +120,13 @@ class HomeFragment : Fragment() {
         super.onDestroyView()
     }
 
-
-
     fun initRecycler(){
-
-
         fragmentHomeBinding!!.rvNftList.setHasFixedSize(true)
+
         val dividerItemDecoration =
             DividerItemDecoration(fragmentHomeBinding!!.rvNftList.context, LinearLayoutManager(context).orientation)
         fragmentHomeBinding!!.rvNftList.addItemDecoration(dividerItemDecoration)
-        //val decoration = DividerItemDecoration(fragmentHomeBinding!!.rvNftList.context, VERTICAL)
-        //fragmentHomeBinding!!.rvNftList.addItemDecoration(decoration)
+
         fragmentHomeBinding!!.rvNftList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
         nftAdapter  = NftAdapter(nftList)
         fragmentHomeBinding!!.rvNftList.adapter = nftAdapter

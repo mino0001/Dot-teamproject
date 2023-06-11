@@ -1,21 +1,217 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:focusableInTouchMode="true"
+        >
 
-    <Button
-        android:id="@+id/btn_new_submit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="323dp"
-        android:layout_marginBottom="683dp"
-        android:text="Button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="NFT 생성"
+            android:textColor="@color/black"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edittext_border"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:padding="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="정보 입력"
+                android:textSize="24sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/tv_brand"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="브랜드"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                 />
+
+            <EditText
+                android:id="@+id/et_brand"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:maxLength="20"
+                android:background="@drawable/edittext_border"
+                android:layout_marginTop="5dp"
+                android:hint="브랜드를 입력하세요"
+                android:inputType="textPersonName"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/tv_model_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="모델명"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                />
+
+            <EditText
+                android:id="@+id/et_model_name"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:maxLength="20"
+                android:background="@drawable/edittext_border"
+                android:layout_marginTop="5dp"
+                android:hint="모델명을 입력하세요"
+                android:inputType="textPersonName"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/tv_manufacturer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="제조국/제조사"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                />
+
+            <EditText
+                android:id="@+id/et_manufacturer"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:maxLength="20"
+                android:background="@drawable/edittext_border"
+                android:layout_marginTop="5dp"
+                android:hint="제조국/제조사를 입력하세요"
+                android:inputType="textPersonName"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/tv_po"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="구매처"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                />
+
+            <EditText
+                android:id="@+id/et_po"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:maxLength="20"
+                android:background="@drawable/edittext_border"
+                android:layout_marginTop="5dp"
+                android:hint="구매처를 입력하세요"
+                android:inputType="textPersonName"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/tv_date_purchase"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="구매 일자"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                />
+
+            <EditText
+                android:id="@+id/et_date_purchase"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:maxLength="20"
+                android:background="@drawable/edittext_border"
+                android:layout_marginTop="5dp"
+                android:hint="구매 일자를 입력하세요"
+                android:inputType="textPersonName"
+                android:textColor="@color/black"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="추가사항"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/tv_new_memo"
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
+                android:hint="기타사항을 입력하세요. \n\n 예시 : 사용 기간, 흠집이나 파손 여부, 수리 내역, AS 가능 날짜 등 "
+                android:inputType="textMultiLine"
+                android:layout_marginTop="10dp"
+                android:padding="5dp"
+                android:background="@drawable/edittext_border"
+                android:maxLength="500"
+                android:maxLines="10"
+                android:textColor="@color/black" />
+
+        </LinearLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layout_3">
+
+            <Button
+                android:id="@+id/btn_new_make"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_border"
+                android:text="생성"
+                android:textColor="#ffffff"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/btn_new_cancel"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_editor_absoluteX="323dp" />
+
+            <Button
+                android:id="@+id/btn_new_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_border"
+                android:text="취소"
+                android:textColor="#ffffff"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/btn_new_make"
+                app:layout_constraintTop_toTopOf="@+id/btn_new_make" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+</ScrollView>

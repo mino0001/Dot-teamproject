@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.ListView
 
-
+// 카테고리 추가 및 삭제하는 액티비티
 class EditCategoryActivity : AppCompatActivity() {
 
 

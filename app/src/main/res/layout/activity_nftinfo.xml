@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    >
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="16dp">
 
@@ -12,8 +16,8 @@
         android:id="@+id/toolbar_nftinfo"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:minHeight="?attr/actionBarSize"
         android:background="@color/white"
+        android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         app:contentInsetStart="0dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -33,10 +37,10 @@
                 android:layout_height="60dp"
                 android:background="@android:color/transparent"
                 android:contentDescription="@null"
+                android:src="@drawable/icon_back"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:src="@drawable/icon_back"
                 tools:ignore="SpeakableTextPresentCheck" />
 
             <TextView
@@ -45,12 +49,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:text=""
-                android:textSize="25sp"
                 android:textColor="#2C3E50"
+                android:textSize="25sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                />
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.appcompat.widget.Toolbar>
 
@@ -60,12 +63,20 @@
         android:layout_height="wrap_content"
         android:text="NFT1"
         android:textSize="50sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/iv_nft_qr"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:srcCompat="@drawable/icon_qr" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="별칭"
+        android:layout_marginTop="5dp"
         android:textSize="24sp"
         android:textStyle="bold" />
 
@@ -75,6 +86,7 @@
         android:layout_height="48dp"
         android:hint="별칭을 입력하세요"
         android:inputType="textPersonName" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -87,17 +99,16 @@
         android:id="@+id/tv_info_address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="0x161234567dddf355dfg"
         android:layout_marginTop="5dp"
+        android:text="0x161234567dddf355dfg"
         android:textSize="24sp"
-        android:textStyle="bold"
-        />
+        android:textStyle="bold" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="받은 시각"
         android:layout_marginTop="5dp"
+        android:text="받은 시각"
         android:textSize="24sp"
         android:textStyle="bold" />
 
@@ -105,53 +116,69 @@
         android:id="@+id/tv_info_trans_time"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="23/05/11 12:23"
         android:layout_marginTop="5dp"
+        android:text="23/05/11 12:23"
         android:textSize="24sp"
-        android:textStyle="bold"
-        />
+        android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/tv_info_sender"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="보낸 사람"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:layout_marginTop="10dp"/>
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_info_sender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="보낸 사람"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_sender_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="10dp"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:text="addresswho1234567" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/tv_info_hash"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:text="트랜잭션 해시"
         android:textSize="24sp"
-        android:textStyle="bold"
-        android:layout_marginTop="10dp"/>
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tv_info_trans_hash"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:text="0xb26e09db6656b998d2913f"
         android:textSize="24sp"
-        android:textStyle="bold"
-        android:layout_marginTop="10dp"/>
+        android:textStyle="bold" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="카테고리 설정"
         android:layout_marginTop="5dp"
+        android:text="카테고리 설정"
         android:textSize="24sp"
         android:textStyle="bold" />
 
 
     <Spinner
-        android:id="@+id/nftcategory"
-        android:entries="@array/category_list"
-        android:layout_marginTop="5dp"
+        android:id="@+id/spinner_nftinfo_category"
         android:layout_width="249dp"
-        android:layout_height="48dp" />
+        android:layout_height="48dp"
+        android:layout_marginTop="5dp"
+        android:entries="@array/category_list" />
 
     <Button
         android:id="@+id/btn_submit"
@@ -166,3 +193,4 @@
 
 
 </LinearLayout>
+</ScrollView>

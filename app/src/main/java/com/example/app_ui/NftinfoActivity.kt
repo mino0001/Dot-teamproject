@@ -1,17 +1,17 @@
 package com.example.app_ui
 
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.annotation.RequiresApi
 import com.example.app_ui.databinding.ActivityNftinfoBinding
-import java.io.Serializable
+
 
 
 class NftinfoActivity : ComponentActivity(){
     private var binding: ActivityNftinfoBinding? = null
-    //lateinit var datas : Nft
+
+
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -20,24 +20,35 @@ class NftinfoActivity : ComponentActivity(){
 
         binding = ActivityNftinfoBinding.inflate(layoutInflater)
         setContentView(binding!!.root)
-        // 주소랑 시각 등등 정보 바인
 
 
-        val data = intent.getParcelableExtra("data", Nft::class.java)
+        /*** 고유 id, 주소, 시각, 카테고리, 별칭 등등 정보 바인딩해서
+         *
+         * 아래 변경하기. 지금은 별칭만 해둔 상태
+         *
+         * ***/
+        var data = intent.getParcelableExtra("data", Nft::class.java)
+        binding!!.tvInfoTitle.text = data!!.alias
 
-        binding!!.tvInfoTitle.text = data!!.alias //변경하기**, 주소, 시각, 보낸 사람, 해시 등
-        binding!!.btnBack.setOnClickListener{
-            intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-        }
 
+        //뒤로가기 버튼
+        binding!!.btnBack.setOnClickListener{ finish() }
+
+        //확인 버튼
         binding!!.btnSubmit.setOnClickListener{
-             binding!!.nftcategory.toString()
-            intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+            val selectedValue = binding!!.spinnerNftinfoCategory.selectedItem as String
+            val position = intent.getIntExtra("position", -1)
+            nftList[position].category = selectedValue
 
-//            카테고리 설정, 별명 -> 처리
+            finish()
+
         }
+
+        /***
+         * 일단 nft 주소로 qr 만들어 둠
+         ***/
+        var ImageQRcode = HomeuserActivity().generaterQRCode(binding!!.tvInfoAddress.text.toString())
+        binding!!.ivNftQr.setImageBitmap(ImageQRcode)
 
     }
 

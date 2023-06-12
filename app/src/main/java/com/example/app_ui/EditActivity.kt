@@ -9,17 +9,24 @@ import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.app_ui.databinding.ActivityEditBinding import com.example.app_ui.databinding.ActivityToolbarBinding
+import com.example.app_ui.databinding.ActivityEditBinding
+import com.example.app_ui.databinding.ActivityToolbarBinding
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
 
 class EditActivity : ComponentActivity() {
 
     private  lateinit var adapter: NftCbAdapter
+    private lateinit var database: DatabaseReference
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val binding = ActivityEditBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // FirebaseDatabase 초기화
+        database = FirebaseDatabase.getInstance().reference
 
 
         adapter = NftCbAdapter(nftList) {
@@ -76,6 +83,11 @@ class EditActivity : ComponentActivity() {
                             // 인덱스가 nftList의 유효한 범위 내에 있는지 확인
                             // 해당 인덱스에 대한 데이터 변경
                             nftList[index].category = selectedCategory.toString()
+
+                            // Firebase Realtime Database에 데이터 업데이트
+                            val nftRef = database.child("users").child(user_id).child("nft").child(nftList[index].more)
+                            nftRef.child("nft_cg").setValue(selectedCategory.toString())
+
                         }
                     }
                     dialog.dismiss()

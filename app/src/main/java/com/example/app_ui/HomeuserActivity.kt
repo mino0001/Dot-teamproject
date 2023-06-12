@@ -7,6 +7,10 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import com.example.app_ui.databinding.ActivityHomeuserBinding
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeEncoder
 
@@ -30,12 +34,25 @@ class HomeuserActivity : ComponentActivity() {
             copyTextToClipboard(this,binding!!.tvUserWalletAddress.text.toString())
         }
 
-        /***
-         * 사용자 정보 QR 코드
-         * 일단 homeuser_activity에 있는 예시 텍스트 지갑 주소로
-         */
-        var ImageQRcode = generaterQRCode(binding!!.tvUserWalletAddress.text.toString())
-        binding!!.ivUserQr.setImageBitmap(ImageQRcode)
+        // 사용자 정보 QR 코드
+        val database = FirebaseDatabase.getInstance().reference.child("users").child(user_id)
+        database.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val userWallet = snapshot.child("user_wallet").getValue(String::class.java)
+                userWallet?.let {
+                    binding!!.tvUserWalletAddress.text = it
+                    val imageQRCode = generaterQRCode(it)
+                    binding!!.ivUserQr.setImageBitmap(imageQRCode)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Handle error
+            }
+        })
+
+        //var ImageQRcode = generaterQRCode(binding!!.tvUserWalletAddress.text.toString())
+        //binding!!.ivUserQr.setImageBitmap(ImageQRcode)
     }
 
     //QRCode 생성

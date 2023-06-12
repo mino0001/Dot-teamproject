@@ -47,7 +47,7 @@ class Send2Activity : ComponentActivity() {
 
         //전송하기
         binding.btnTransmit.setOnClickListener {
-            if(binding.etSendName.text.toString().trim().isNotEmpty()&&
+            if(binding.etSendUserId.text.toString().trim().isNotEmpty()&&
                 binding.etSendAddress.text.toString().trim().isNotEmpty()&&
                 binding.etSendPw.text.toString().trim().isNotEmpty()){
 

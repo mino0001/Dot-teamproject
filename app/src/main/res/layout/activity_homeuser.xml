@@ -139,6 +139,8 @@
             android:layout_marginTop="16dp"
             android:layout_marginBottom="32dp"
             android:text="thisis13wallet437address3235"
+            android:maxLines="1"
+            android:ellipsize="end"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/iv_copy"

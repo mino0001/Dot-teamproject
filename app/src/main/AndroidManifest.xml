@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.VIBRATE" /> <!-- 진동 알림을 위한 권한 -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" /> <!-- 부팅 후 알림 수신을 위한 권한 -->
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,6 +17,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.App_ui"
         tools:targetApi="31">
+
+        <receiver android:name=".NotificationReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" /> <!-- 부팅 후 알림 수신을 위한 인텐트 필터 -->
+            </intent-filter>
+        </receiver>
 
         <activity
             android:name=".HomeuserActivity"

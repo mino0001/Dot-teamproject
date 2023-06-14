@@ -8,6 +8,8 @@ import com.example.app_ui.databinding.ActivityNotiBinding
 
 class NotiActivity : AppCompatActivity() {
 
+
+
     lateinit var AlarmPageListAdapter: NotiListAdapter
     lateinit var binding: ActivityNotiBinding
     private val noti = mutableListOf<Noti>()

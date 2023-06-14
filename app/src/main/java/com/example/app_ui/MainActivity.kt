@@ -1,14 +1,25 @@
 package com.example.app_ui
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.core.app.NotificationCompat
+import androidx.core.content.ContentProviderCompat.requireContext
 import com.example.app_ui.databinding.ActivityMainBinding
 import com.google.android.material.navigation.NavigationBarView
-
+import com.google.firebase.FirebaseApp
+import com.google.firebase.FirebaseOptions
+import com.google.firebase.database.FirebaseDatabase
+import java.io.File
 
 
 class MainActivity : AppCompatActivity() {
@@ -17,9 +28,16 @@ class MainActivity : AppCompatActivity() {
     private lateinit var homeFragment: HomeFragment
     private lateinit var cameraFragment: CameraFragment
     private lateinit var moreFragment: MoreFragment
-    private var doubleBackToExitPressedOnce = false
     var backButtonPressedOnce = false
+    val channelId = "my_channel_id"
+    val channelName = "My Channel"
+    val importance = NotificationManager.IMPORTANCE_HIGH
 
+    val builder = NotificationCompat.Builder(this, channelId)
+        .setSmallIcon(R.drawable.icon_logo_2)
+        .setContentTitle("Notification Title")
+        .setContentText("Notification Message")
+        .setPriority(importance)
 
     // 메모리에 올라갔을 때
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,6 +46,23 @@ class MainActivity : AppCompatActivity() {
         val binding : ActivityMainBinding =ActivityMainBinding.inflate(layoutInflater)
         activityMainBinding = binding
         setContentView(activityMainBinding!!.root)
+
+
+
+        //firebase 초기화 + 데이터베이스 연결
+        FirebaseApp.initializeApp(this)
+
+        // Firebase 데이터베이스 참조 가져오기
+        val database = FirebaseDatabase.getInstance()
+
+        // 데이터베이스 URL 설정
+        val databaseUrl = "https://console.firebase.google.com/u/1/project/dot-project-by-bym" // 팀원이 제공한 데이터베이스 URL로 변경
+        database.setPersistenceEnabled(true)
+        database.setPersistenceCacheSizeBytes(52428800)
+
+        // Firebase 데이터베이스에 연결
+        val databaseRef = database.getReference("database-node")
+
 
         /*** 로그인 상태 확인
          *
@@ -44,6 +79,9 @@ class MainActivity : AppCompatActivity() {
             finish()
         }
         ***/
+
+        //로그인한 사용자의 아이디에 대한 address가 없으면 sms 인증
+
 
         val onBackPressedDispatcher = this.onBackPressedDispatcher
         onBackPressedDispatcher.addCallback(this, callback)
@@ -91,5 +129,37 @@ class MainActivity : AppCompatActivity() {
                 handler.postDelayed({ backButtonPressedOnce = false }, 2000)
             }}
     }
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                channelId,
+                channelName,
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
+            val notificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
+
+    private fun createNotification() {
+        val notificationId = 123 // 알림 ID
+        val intent = Intent(this, MainActivity::class.java) // 알림을 클릭했을 때 실행할 인텐트
+        val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+
+        val notification = NotificationCompat.Builder(this, channelId)
+            .setContentTitle("새로운 알림")
+            .setContentText("새로운 데이터가 추가되었습니다.")
+            .setSmallIcon(R.drawable.icon_logo_2)
+            .setContentIntent(pendingIntent)
+            .setAutoCancel(true)
+            .build()
+
+        val notificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.notify(notificationId, notification)
+    }
+
+
 
 }

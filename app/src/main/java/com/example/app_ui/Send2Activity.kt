@@ -5,17 +5,29 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.app_ui.databinding.ActivitySend2Binding
+import com.example.contract.MyNFT
 import com.google.zxing.integration.android.IntentIntegrator
+import org.web3j.crypto.Credentials
+import org.web3j.protocol.Web3j
+import org.web3j.protocol.core.methods.response.TransactionReceipt
+import org.web3j.protocol.http.HttpService
+import org.web3j.tx.gas.DefaultGasProvider
 
 
 class Send2Activity : ComponentActivity() {
     private  lateinit var adapter: NftSendAdapter
+
+    val web3j = Web3j.build(HttpService("https://eth-sepolia.g.alchemy.com/v2/musyAUHHyrKtOkx90Ygr7A-q7_1AYfLH"))
+    val contractAddress = "0x8481b9693fFabb79463B03566af2391ef150f957"
+    lateinit var mynft: MyNFT
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -69,10 +81,40 @@ class Send2Activity : ComponentActivity() {
                 loadingView.visibility = View.GONE
                 val intent = Intent(this, NotiActivity::class.java)
                 startActivity(intent)***/
+                val userId = findViewById<EditText>(R.id.et_send_user_id).text.toString()
+                val sendAddress = findViewById<EditText>(R.id.et_send_address).text.toString()
+                val pin = findViewById<EditText>(R.id.et_send_pw).text.toString()
+                val memo = findViewById<EditText>(R.id.tv_memo).text.toString()
+                val privateKey = findViewById<EditText>(R.id.et_private_key).text.toString()
 
-            }else{ //지갑 주소, 이름, PIN 번호 입력 안 했을 경우
+                val credentials = Credentials.create(privateKey)
+                mynft = MyNFT.load(contractAddress, web3j, credentials, DefaultGasProvider())
+
+                //선택된 nft의 토큰id 배열에 넣는 로직 추가해야함
+                /* for (배열 수만큼) {*/
+                mynft.transferNFT(tokenId[i], sendAddress)
+                    .sendAsync()
+                    .thenApply { transactionReceipt: TransactionReceipt? ->
+                    // 트랜잭션이 성공적으로 전송된 후 실행될 코드
+                        runOnUiThread {
+                            Toast.makeText(this@Send2Activity, "트랜잭션이 성공적으로 전송되었습니다.", Toast.LENGTH_SHORT).show()
+                        }
+                        // 전송 완료 후 getTransferCount 함수 호출
+                        val tokenId = transactionReceipt?.tokenId[i]
+                        val transferCount = mynft.getTransferCount(tokenId).send()
+                    }
+                    .exceptionally { throwable: Throwable? ->
+                    // 트랜잭션이 실패하거나 예외가 발생한 경우 실행될 코드
+                        runOnUiThread {
+                            Toast.makeText(this@Send2Activity, "트랜잭션 전송에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                        }
+                        null
+                    }
+                }
+
+                else{ //지갑 주소, 이름, PIN 번호 입력 안 했을 경우
                 Toast.makeText(this, "정보를 모두 입력하세요.", Toast.LENGTH_SHORT).show()
-            }
+                }
 
         }
 

@@ -30,15 +30,23 @@ class NftinfoActivity : ComponentActivity(){
         setContentView(binding!!.root)
 
 
-        /*** 고유 id, 주소, 시각, 카테고리, 별칭 등등 정보 바인딩해서
-         *
-         * 아래 변경하기. 지금은 별칭만 해둔 상태
+        /***
+         * TODO: nft 정보 추가 binding
          *
          * ***/
+
         var data = intent.getParcelableExtra("data", Nft::class.java)
 
-        binding!!.tvInfoTitle.text = data!!.alias
-        binding!!.tvInfoAddress.text = data!!.more
+        if (data!!.alias!!.isEmpty()){
+            binding!!.tvInfoTitle.text = data!!.more //token id로
+        } else {
+            binding!!.tvInfoTitle.text = data!!.alias
+        }
+
+
+        if(data!!.add_info!!.equals("")){
+            binding!!.tvInfoAdditionalInfo.text = "없음"
+        }else binding!!.tvInfoAdditionalInfo.text = data!!.add_info
 
         binding!!.spinnerNftinfoCategory.adapter = ArrayAdapter(
             this,
@@ -51,7 +59,7 @@ class NftinfoActivity : ComponentActivity(){
         binding!!.btnBack.setOnClickListener{ finish() }
 
         //확인 버튼 클릭 시 updateNftCategoryInFirebase 함수 호출
-        binding!!.btnSubmit.setOnClickListener{
+        binding!!.btnInfoSubmit.setOnClickListener{
             val selectedValue = binding!!.spinnerNftinfoCategory.selectedItem as String
             val position = intent.getIntExtra("position", -1)
             nftList[position].category = selectedValue
@@ -66,9 +74,9 @@ class NftinfoActivity : ComponentActivity(){
 
 
         /***
-         * 일단 nft 주소로 qr 만들어 둠
+         * 일단 nft 주소로 id로 QR 만들어 둠
          ***/
-        var ImageQRcode = HomeuserActivity().generaterQRCode(binding!!.tvInfoAddress.text.toString())
+        var ImageQRcode = HomeuserActivity().generaterQRCode(binding!!.tvInfoNftId.text.toString())
         binding!!.ivNftQr.setImageBitmap(ImageQRcode)
 
     }

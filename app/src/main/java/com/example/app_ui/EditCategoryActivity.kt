@@ -111,30 +111,4 @@ class EditCategoryActivity : AppCompatActivity() {
 
 
     }
-
-    /*fun moveItemUp(view: View) {
-        val checkedItems = listView.checkedItemPositions
-        for (i in 1 until itemList.size) {
-            if (checkedItems.get(i) && !checkedItems.get(i - 1)) {
-                val temp = itemList[i]
-                itemList[i] = itemList[i - 1]
-                itemList[i - 1] = temp
-            }
-        }
-        listView.clearChoices()
-        adapter.notifyDataSetChanged()
-    }
-
-    fun moveItemDown(view: View) {
-        val checkedItems = listView.checkedItemPositions
-        for (i in itemList.size - 2 downTo 0) {
-            if (checkedItems.get(i) && !checkedItems.get(i + 1)) {
-                val temp = itemList[i]
-                itemList[i] = itemList[i + 1]
-                itemList[i + 1] = temp
-            }
-        }
-        listView.clearChoices()
-        adapter.notifyDataSetChanged()
-    }*/
 }

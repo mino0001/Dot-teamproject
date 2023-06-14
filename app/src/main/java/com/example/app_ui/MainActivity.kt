@@ -18,6 +18,7 @@ import com.example.app_ui.databinding.ActivityMainBinding
 import com.google.android.material.navigation.NavigationBarView
 import com.google.firebase.FirebaseApp
 import com.google.firebase.FirebaseOptions
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import java.io.File
 
@@ -32,6 +33,7 @@ class MainActivity : AppCompatActivity() {
     val channelId = "my_channel_id"
     val channelName = "My Channel"
     val importance = NotificationManager.IMPORTANCE_HIGH
+    private lateinit var auth: FirebaseAuth
 
     val builder = NotificationCompat.Builder(this, channelId)
         .setSmallIcon(R.drawable.icon_logo_2)
@@ -47,41 +49,30 @@ class MainActivity : AppCompatActivity() {
         activityMainBinding = binding
         setContentView(activityMainBinding!!.root)
 
+        auth = FirebaseAuth.getInstance()
 
-
-        //firebase 초기화 + 데이터베이스 연결
-        FirebaseApp.initializeApp(this)
-
-        // Firebase 데이터베이스 참조 가져오기
-        val database = FirebaseDatabase.getInstance()
-
-        // 데이터베이스 URL 설정
-        val databaseUrl = "https://console.firebase.google.com/u/1/project/dot-project-by-bym" // 팀원이 제공한 데이터베이스 URL로 변경
-        database.setPersistenceEnabled(true)
-        database.setPersistenceCacheSizeBytes(52428800)
-
-        // Firebase 데이터베이스에 연결
-        val databaseRef = database.getReference("database-node")
-
-
-        /*** 로그인 상태 확인
-         *
-        val sharedPreferences = getSharedPreferences("Login", Context.MODE_PRIVATE)
-        val token = sharedPreferences.getString("token", null)
-
-        if (token != null) {
-            // 저장된 토큰이 있으면 자동으로 로그인
-            // TODO: 로그인 처리 로직 추가
-        } else {
-            // 저장된 토큰이 없으면 로그인 화면으로 이동
+        // 로그인 여부 확인
+        if (auth.currentUser == null) {
+            // 로그인되어 있지 않으면 LoginActivity로 이동
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
             finish()
         }
-        ***/
 
-        //로그인한 사용자의 아이디에 대한 address가 없으면 sms 인증
 
+//        //firebase 초기화 + 데이터베이스 연결
+//        FirebaseApp.initializeApp(this)
+//
+//        // Firebase 데이터베이스 참조 가져오기
+//        val database = FirebaseDatabase.getInstance()
+//
+//        // 데이터베이스 URL 설정
+//        val databaseUrl = "https://console.firebase.google.com/u/1/project/dot-project-by-bym" // 팀원이 제공한 데이터베이스 URL로 변경
+//        database.setPersistenceEnabled(true)
+//        database.setPersistenceCacheSizeBytes(52428800)
+//
+//        // Firebase 데이터베이스에 연결
+//        val databaseRef = database.getReference("database-node")
 
         val onBackPressedDispatcher = this.onBackPressedDispatcher
         onBackPressedDispatcher.addCallback(this, callback)
@@ -91,6 +82,7 @@ class MainActivity : AppCompatActivity() {
         homeFragment = HomeFragment.newInstance()
         supportFragmentManager.beginTransaction().add(R.id.fragment_frame, homeFragment).commit()
         //처음에만 add, 나머지는 replace
+
     }
 
 

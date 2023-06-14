@@ -16,11 +16,18 @@ class NftSendAdapter(private val nftList: MutableList<Nft>) : RecyclerView.Adapt
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = nftList[position]
+        val data = nftList[position]
 
-        holder.binding.ivNft.setImageResource(item.img_nft)
-        holder.binding.tvNftAlias.text = item.alias
-        holder.binding.tvNftMore.text = item.more
+        holder.binding.ivNft.setImageResource(data.img_nft)
+
+        if (data.alias!!.isEmpty()){
+            holder.binding.tvNftTitle.text = data.more
+            holder.binding.tvNftSubtitle.text = ""
+        }else{
+
+            holder.binding.tvNftTitle.text = data.alias
+            holder.binding.tvNftSubtitle.text =data.more
+        }
 
         holder.bind(nftList[position])
 
@@ -40,8 +47,8 @@ class NftSendAdapter(private val nftList: MutableList<Nft>) : RecyclerView.Adapt
 
         fun bind(data: Nft) {
             binding.ivNft.setImageResource(data.img_nft)
-            binding.tvNftAlias.text = data.alias
-            binding.tvNftMore.text = data.more
+            binding.tvNftTitle.text = data.alias
+            binding.tvNftSubtitle.text = data.more
 
         }
     }

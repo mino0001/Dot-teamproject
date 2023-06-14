@@ -6,6 +6,7 @@ import android.app.Application
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.result.contract.ActivityResultContracts
 import com.example.app_ui.databinding.ActivityLoginBinding
@@ -41,6 +42,8 @@ class LoginActivity : ComponentActivity() {
                     // Google 로그인 실패 처리
                     handleLoginFailure(e)
                 }
+            }else {
+                Toast.makeText(this, "Login fail", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -75,21 +78,7 @@ class LoginActivity : ComponentActivity() {
 
     }
 
-    /*private fun signInWithEmailAndPassword(email: String, password: String) {
-        auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    // 로그인 성공 시 MainActivity로 이동
-                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                    startActivity(intent)
-                    finish()
-                } else {
-                    // 로그인 실패 시 처리
-                    val exception = task.exception
-                    handleLoginFailure(exception)
-                }
-            }
-    }*/
+
 
 
     private fun signInWithGoogle() {
@@ -100,21 +89,7 @@ class LoginActivity : ComponentActivity() {
 
     }
 
-    /*override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == RC_SIGN_IN) {
-            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-            try {
-                // Google 로그인이 성공한 경우, Firebase에 인증 정보 전달
-                val account = task.getResult(ApiException::class.java)
-                firebaseAuthWithGoogle(account.idToken)
-            } catch (e: ApiException) {
-                // Google 로그인 실패 처리
-                handleLoginFailure(e)
-            }
-        }
-    }*/
 
     private fun firebaseAuthWithGoogle(idToken: String?) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
@@ -142,17 +117,6 @@ class LoginActivity : ComponentActivity() {
             // 예시: showErrorDialog(it.message)
         }
     }
-
-    /*** 로그인 성공 시 호출되는 함수
-    private fun saveLoginToken(token: String) {
-    val sharedPreferences = getSharedPreferences("Login", Context.MODE_PRIVATE)
-    val editor = sharedPreferences.edit()
-    editor.putString("token", token)
-    editor.apply()
-    }
-     ***/
-
-
 
 
 }

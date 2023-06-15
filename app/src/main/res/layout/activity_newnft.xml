@@ -48,7 +48,7 @@
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 android:textSize="18sp"
-                 />
+                />
 
             <EditText
                 android:id="@+id/et_brand"
@@ -154,6 +154,30 @@
                 android:inputType="textPersonName"
                 android:textColor="@color/black"/>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="추가사항"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/tv_new_memo"
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/edittext_border"
+                android:hint="(선택)기타사항을 입력하세요. \n\n 예시 : 사용 기간, 흠집이나 파손 여부, 수리 내역, AS 가능 날짜 등 "
+                android:inputType="textMultiLine"
+                android:maxLength="500"
+                android:maxLines="10"
+                android:padding="5dp"
+                android:textColor="@color/black" />
+
 
         </LinearLayout>
 
@@ -167,23 +191,23 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="추가사항"
+                android:text="별명"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
-                android:id="@+id/tv_new_memo"
+                android:id="@+id/et_new_alias"
                 android:layout_width="match_parent"
-                android:layout_height="130dp"
+                android:layout_height="48dp"
+                android:hint="(선택) 별명을 입력하세요"
+                android:text=""
                 android:layout_marginTop="10dp"
+                android:padding="5dp"
                 android:background="@drawable/edittext_border"
-                android:hint="기타사항을 입력하세요. \n\n 예시 : 사용 기간, 흠집이나 파손 여부, 수리 내역, AS 가능 날짜 등 "
-                android:inputType="textMultiLine"
                 android:maxLength="500"
                 android:maxLines="10"
-                android:padding="5dp"
                 android:textColor="@color/black" />
         </LinearLayout>
 
@@ -206,7 +230,7 @@
             <EditText
                 android:id="@+id/et_private_key"
                 android:layout_width="match_parent"
-                android:layout_height="130dp"
+                android:layout_height="100dp"
                 android:hint="개인키를 입력하세요"
                 android:inputType="textMultiLine"
                 android:layout_marginTop="10dp"
@@ -252,6 +276,7 @@
                 android:textColor="#ffffff"
                 android:textSize="24sp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/btn_new_make"
                 app:layout_constraintTop_toTopOf="@+id/btn_new_make" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

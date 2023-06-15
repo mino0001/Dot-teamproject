@@ -8,12 +8,12 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.annotation.RequiresApi
 import com.example.app_ui.databinding.ActivityNftinfoBinding
+import com.example.contract.MyNFT
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.Query
 import com.google.firebase.database.ValueEventListener
-import com.example.contract.MyNFT
 import org.web3j.crypto.Credentials
 import org.web3j.protocol.Web3j
 import org.web3j.protocol.http.HttpService
@@ -21,15 +21,15 @@ import org.web3j.tx.gas.DefaultGasProvider
 import java.math.BigInteger
 
 
-class NftinfoActivity : ComponentActivity() {
+class NftinfoActivity : ComponentActivity(){
     private var binding: ActivityNftinfoBinding? = null
 
-    // 데베 쓰면 지울부분
-    val web3j =
-        Web3j.build(HttpService("https://eth-sepolia.g.alchemy.com/v2/musyAUHHyrKtOkx90Ygr7A-q7_1AYfLH"))
+    val web3j = Web3j.build(HttpService("https://eth-sepolia.g.alchemy.com/v2/musyAUHHyrKtOkx90Ygr7A-q7_1AYfLH"))
     val contractAddress = "0x8481b9693fFabb79463B03566af2391ef150f957"
     val credentials = Credentials.create("Privatekey")
     lateinit var mynft: MyNFT
+
+
 
     // 파이어베이스 데이터베이스 레퍼런스 생성
     val database = FirebaseDatabase.getInstance().reference
@@ -44,9 +44,8 @@ class NftinfoActivity : ComponentActivity() {
         setContentView(binding!!.root)
 
 
-        /*** 고유 id, 주소, 시각, 카테고리, 별칭 등등 정보 바인딩해서
-         *
-         * 아래 변경하기. 지금은 별칭만 해둔 상태
+        /***
+         * TODO: nft 정보 추가 binding
          *
          * ***/
 
@@ -55,25 +54,16 @@ class NftinfoActivity : ComponentActivity() {
         // null일 경우 0 반환 -> 오류메세지 띄워야함
         // val tokenId = BigInteger.valueOf(data?.tokenId ?: 0)
         val tokenId = BigInteger.ONE
-        if (tokenId == BigInteger.ZERO) {
+        if (tokenId == BigInteger.ZERO){
             Toast.makeText(this, "Please enter a valid tokenId.", Toast.LENGTH_SHORT).show()
             return
         }
         getTokenData(tokenId)
 
-        //바인딩하기
         var data = intent.getParcelableExtra("data", Nft::class.java)
 
-        if (data!!.alias!!.isEmpty()) {
-            binding!!.tvInfoTitle.text = data!!.more //token id로
-        } else {
-            binding!!.tvInfoTitle.text = data!!.alias
-        }
-
-
-        if (data!!.add_info!!.equals("")) {
-            binding!!.tvInfoAdditionalInfo.text = "없음"
-        } else binding!!.tvInfoAdditionalInfo.text = data!!.add_info
+        binding!!.tvInfoTitle.text = data!!.alias
+        binding!!.tvInfoNftId.text = data!!.more
 
         binding!!.spinnerNftinfoCategory.adapter = ArrayAdapter(
             this,
@@ -86,10 +76,10 @@ class NftinfoActivity : ComponentActivity() {
 
 
         //뒤로가기 버튼
-        binding!!.btnBack.setOnClickListener { finish() }
+        binding!!.btnBack.setOnClickListener{ finish() }
 
         //확인 버튼 클릭 시 updateNftCategoryInFirebase 함수 호출
-        binding!!.btnInfoSubmit.setOnClickListener {
+        binding!!.btnInfoSubmit.setOnClickListener{
             val selectedValue = binding!!.spinnerNftinfoCategory.selectedItem as String
             val position = intent.getIntExtra("position", -1)
             nftList[position].category = selectedValue
@@ -102,12 +92,32 @@ class NftinfoActivity : ComponentActivity() {
         }
 
 
+
         /***
          * 일단 nft 주소로 id로 QR 만들어 둠
          ***/
         var ImageQRcode = HomeuserActivity().generaterQRCode(binding!!.tvInfoNftId.text.toString())
         binding!!.ivNftQr.setImageBitmap(ImageQRcode)
 
+
+
+    }
+    // TokenData 가져오는 함수
+    private fun getTokenData(tokenId: BigInteger) {
+        mynft.getTokenData(tokenId)
+            .sendAsync()
+            .thenAccept { tokenData ->
+                runOnUiThread {
+                    // 필드별로 변수에 저장
+                    val brand = tokenData.brand
+                    val modelName = tokenData.modelName
+                    val manufacturer = tokenData.manufacturer
+                    val purchaseOrder = tokenData.purchaseOrder
+                    val purchaseDate = tokenData.purchaseDate
+                    val additionalInfo = tokenData.additionalInfo
+                    val transferHistory = tokenData.transferHistory
+                }
+            }
     }
 
     // 확인 버튼 클릭 시 호출되는 함수
@@ -141,7 +151,6 @@ class NftinfoActivity : ComponentActivity() {
         })
     }
 
-
     // TokenData 가져오는 함수
     private fun getTokenData(tokenId: BigInteger) {
         mynft.getTokenData(tokenId)
@@ -159,4 +168,9 @@ class NftinfoActivity : ComponentActivity() {
                 }
             }
     }
-}
+
+
+
+
+    }
+

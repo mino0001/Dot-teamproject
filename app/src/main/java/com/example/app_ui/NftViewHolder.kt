@@ -20,8 +20,15 @@ class NftViewHolder ( val binding: ListNftItemBinding)
     fun bind(data: Nft) {
 
         binding.ivNft.setImageResource(data.img_nft)
-        binding.tvNftAlias.text =data.alias
-        binding.tvNftMore.text =data.more
+
+        if (data.alias!!.isEmpty()){
+            binding.tvNftTitle.text = data.more
+            binding.tvNftSubtitle.text = ""
+
+        }else{
+            binding.tvNftTitle.text = data.alias
+            binding.tvNftSubtitle.text =data.more
+        }
 
 
         itemView.setOnClickListener {

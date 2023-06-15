@@ -16,17 +16,19 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.app_ui.databinding.FragmentHomeBinding
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 
 
 val nftList = mutableListOf<Nft>()
-//var categoryArray = arrayOf("카테고리1", "카테고리2","카테고리3","카테고리4")
 lateinit var categoryArray: Array<String>
 var count = 0
 lateinit var nftAdapter : NftAdapter
 
+
 class HomeFragment : Fragment() {
 
+    private lateinit var auth: FirebaseAuth
 
     //뷰가 사라질 때, 즉 메모리에서 날라갈 때 같이 날리기 위해 따로 빼두기
     private var fragmentHomeBinding : FragmentHomeBinding? =null
@@ -113,6 +115,7 @@ class HomeFragment : Fragment() {
 
         val binding : FragmentHomeBinding = FragmentHomeBinding.inflate(inflater,container,false)
         fragmentHomeBinding = binding
+
 
         return fragmentHomeBinding!!.root
     }
@@ -201,7 +204,8 @@ class HomeFragment : Fragment() {
                                     nftAlias,
                                     nftHash,
                                     nftCg,
-                                    false
+                                    false,
+                                    ""
                                 )
                             )
                         }
@@ -216,39 +220,6 @@ class HomeFragment : Fragment() {
                 }
             })
 
-
-        /*fragmentHomeBinding!!.spinnerCategory.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
-
-                if(count==0){
-                    count++
-                    nftList.apply {
-                        add(Nft(1,R.drawable.icon_nft2, "NFT1", "more_1", "카테고리1",false))
-                        add(Nft(2,R.drawable.icon_nft2, "nft_ex_2", "more_2", "카테고리2",false))
-                        add(Nft(3,R.drawable.nft, "nft_ex_3", "more_3", "카테고리3",false))
-                        add(Nft(4,R.drawable.nft, "nft_ex_4", "more_4", "카테고리1",false))
-                        add(Nft(5,R.drawable.icon_nft2, "nft_ex_5", "more_5", "카테고리4",false))
-                        add(Nft(6,R.drawable.nft, "nft_ex_6", "more_6", "카테고리1",false))
-                        add(Nft(7,R.drawable.nft, "nft_ex_7", "more_7", "카테고리3",false))
-                        add(Nft(8,R.drawable.nft, "nft_ex_8", "more_8", "카테고리2",false))
-                    }
-                }
-
-
-                if(fragmentHomeBinding!!.spinnerCategory.getItemAtPosition(position).equals("전체")){
-                    nftAdapter=NftAdapter(nftList)
-                }
-                else {
-                    val filteredList = nftList.filter { it.category == fragmentHomeBinding!!.spinnerCategory.getItemAtPosition(position)}
-                    nftAdapter =NftAdapter(filteredList.toMutableList())
-                }
-
-                fragmentHomeBinding!!.rvNftList.adapter = nftAdapter
-                nftAdapter.notifyDataSetChanged()
-            }
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-            }
-        }*/
 
 
 

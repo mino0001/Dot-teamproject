@@ -4,7 +4,6 @@ import android.R
 import android.os.Build
 import android.os.Bundle
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.annotation.RequiresApi
 import com.example.app_ui.databinding.ActivityNftinfoBinding
@@ -13,12 +12,6 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.Query
 import com.google.firebase.database.ValueEventListener
-import com.example.contract.MyNFT
-import org.web3j.crypto.Credentials
-import org.web3j.protocol.Web3j
-import org.web3j.protocol.http.HttpService
-import org.web3j.tx.gas.DefaultGasProvider
-import java.math.BigInteger
 
 
 class NftinfoActivity : ComponentActivity(){
@@ -26,13 +19,6 @@ class NftinfoActivity : ComponentActivity(){
 
     // 파이어베이스 데이터베이스 레퍼런스 생성
     val database = FirebaseDatabase.getInstance().reference
-
-    // 데베 쓰면 지울부분
-    val web3j = Web3j.build(HttpService("https://eth-sepolia.g.alchemy.com/v2/musyAUHHyrKtOkx90Ygr7A-q7_1AYfLH"))
-    val contractAddress = "0x8481b9693fFabb79463B03566af2391ef150f957"
-    val credentials = Credentials.create("Privatekey")
-    lateinit var mynft: MyNFT
-
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -92,12 +78,15 @@ class NftinfoActivity : ComponentActivity(){
 
         }
 
+
+
         /***
          * 일단 nft 주소로 qr 만들어 둠
          ***/
         var ImageQRcode = HomeuserActivity().generaterQRCode(binding!!.tvInfoAddress.text.toString())
         binding!!.ivNftQr.setImageBitmap(ImageQRcode)
 
+    }
 
     // 확인 버튼 클릭 시 호출되는 함수
     private fun updateNftCategoryInFirebase(position: Int, newCategory: String) {

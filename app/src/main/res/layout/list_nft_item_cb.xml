@@ -11,7 +11,7 @@
             android:id="@+id/iv_nft"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="24dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -20,22 +20,24 @@
             app:srcCompat="@drawable/icon_nft2" />
 
         <TextView
-            android:id="@+id/tv_nft_alias"
+            android:id="@+id/tv_nft_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="4dp"
-            android:layout_marginBottom="6dp"
+            android:layout_marginBottom="4dp"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:text="NFT1"
             android:textColor="#000000"
             android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/tv_nft_more"
+            app:layout_constraintBottom_toTopOf="@+id/tv_nft_subtitle"
             app:layout_constraintStart_toEndOf="@+id/iv_nft"
             app:layout_constraintTop_toTopOf="@+id/iv_nft" />
 
         <TextView
-            android:id="@+id/tv_nft_more"
+            android:id="@+id/tv_nft_subtitle"
             android:layout_width="wrap_content"
             android:layout_height="27dp"
             android:layout_marginStart="16dp"
@@ -45,9 +47,11 @@
             android:textColor="#922B2B2B"
             android:textSize="16sp"
             android:textStyle="bold"
+            android:maxLines="1"
+            android:ellipsize="end"
             app:layout_constraintBottom_toBottomOf="@+id/iv_nft"
             app:layout_constraintStart_toEndOf="@+id/iv_nft"
-            app:layout_constraintTop_toBottomOf="@+id/tv_nft_alias" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_nft_title" />
 
         <CheckBox
             android:id="@+id/cb_nft"

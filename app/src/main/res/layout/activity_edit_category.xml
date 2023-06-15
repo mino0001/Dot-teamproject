@@ -53,36 +53,5 @@
         android:choiceMode="multipleChoice"
         android:listSelector="@android:color/darker_gray" />
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
-        android:orientation="horizontal"
-        android:gravity="center">
-
-        <Button
-            android:id="@+id/btnMoveUp"
-            android:layout_width="130dp"
-            android:layout_height="50dp"
-            android:text="위로 이동"
-            android:textSize="20sp"
-            android:textColor="#FFFFFF"
-            android:layout_marginEnd="30dp"
-            android:background="@drawable/btn_border"
-            android:onClick="moveItemUp" />
-
-        <Button
-            android:id="@+id/btnMoveDown"
-            android:layout_width="130dp"
-            android:layout_height="50dp"
-            android:text="아래로 이동"
-            android:textSize="20sp"
-            android:layout_marginStart="30dp"
-            android:textColor="#FFFFFF"
-            android:background="@drawable/btn_border"
-            android:onClick="moveItemDown" />
-
-    </LinearLayout>
 
 </LinearLayout>

@@ -16,5 +16,6 @@
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_newnft">NewnftActivity</string>
     <string name="title_activity_loading">LoadingActivity</string>
+    <string name="title_activity_main">MainActivity</string>
 
 </resources>

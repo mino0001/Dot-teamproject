@@ -30,8 +30,8 @@ class NftCbAdapter(private val nftList: MutableList<Nft>, private val selectAllL
 
         holder.binding.cbNft.isChecked = isChecked
         holder.binding.ivNft.setImageResource(item.img_nft)
-        holder.binding.tvNftAlias.text = item.alias
-        holder.binding.tvNftMore.text = item.more
+        holder.binding.tvNftTitle.text = item.alias
+        holder.binding.tvNftSubtitle.text = item.more
 
         holder.bind(nftList[position])
 

@@ -39,10 +39,16 @@ class HomeuserActivity : ComponentActivity() {
         database.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val userWallet = snapshot.child("user_wallet").getValue(String::class.java)
+                val userName = snapshot.child("user_name").getValue(String::class.java)
+
                 userWallet?.let {
                     binding!!.tvUserWalletAddress.text = it
                     val imageQRCode = generaterQRCode(it)
                     binding!!.ivUserQr.setImageBitmap(imageQRCode)
+                }
+
+                userName?.let{
+                    binding!!.tvUserName.text = it
                 }
             }
 

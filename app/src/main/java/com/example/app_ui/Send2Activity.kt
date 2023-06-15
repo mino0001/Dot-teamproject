@@ -13,6 +13,9 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.app_ui.databinding.ActivitySend2Binding
 import com.example.contract.MyNFT
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.google.zxing.integration.android.IntentIntegrator
 import org.web3j.crypto.Credentials
 import org.web3j.protocol.Web3j
@@ -87,13 +90,16 @@ class Send2Activity : ComponentActivity() {
                 val pin = findViewById<EditText>(R.id.et_send_pw).text.toString()
                 val memo = findViewById<EditText>(R.id.tv_memo).text.toString()
                 val privateKey = findViewById<EditText>(R.id.et_private_key).text.toString()
+                var newAlias = "(이름 없음)"
 
-                val credentials = Credentials.create(privateKey)
+                var credentials = Credentials.create(privateKey)
                 mynft = MyNFT.load(contractAddress, web3j, credentials, DefaultGasProvider())
 
                 //선택된 nft의 토큰id 배열에 넣는 로직 추가해야함
                 /* for (배열 수만큼) {*/
-                val tokenId = arrayOf(1, 2, 3)
+                val tokenId = filteredList.map { it.more.toInt() }.toTypedArray()
+
+
                 for (i in tokenId) {
                     mynft.transferNFT(BigInteger.valueOf(i.toLong()), sendAddress)
                         .sendAsync()
@@ -105,7 +111,56 @@ class Send2Activity : ComponentActivity() {
                                     "트랜잭션이 성공적으로 전송되었습니다.",
                                     Toast.LENGTH_SHORT
                                 ).show()
+
+                                val firebaseDatabase = FirebaseDatabase.getInstance()
+                                val reference = firebaseDatabase.getReference("users/${user_id}/nft")
+
+
+                                for ((index, nft) in filteredList.withIndex()) {
+                                    if (nft.more.toInt() == i) {
+                                        newAlias = nft.alias.toString()
+                                        reference.child((nft.id-1).toString()).removeValue()
+                                        filteredList.removeAt(index)
+                                        adapter.notifyItemRemoved(index)
+                                        break
+                                    }
+                                }
+
+
+                                println("전송된 NFT 삭제완료")
+
+                                val databaseReference: DatabaseReference = firebaseDatabase.reference
+
+                                val userNftRef: DatabaseReference = databaseReference.child("users").child(userId).child("nft")
+
+                                println("받은 NFT 저장중...")
+
+                                userNftRef.get()
+                                    .addOnSuccessListener { dataSnapshot: DataSnapshot ->
+                                        val nftCount = dataSnapshot.childrenCount.toInt()
+
+                                        val forNewNftRef: DatabaseReference = userNftRef.child(nftCount.toString())
+
+                                        val nftData = NFTData(i.toString(), "전체", newAlias)
+
+                                        println("생성된 NFT 저장중...")
+
+                                        forNewNftRef.setValue(nftData)
+                                            .addOnSuccessListener {
+                                                // 저장 성공적으로 완료됨
+                                                println("생성된 NFT 저장 완료")
+                                                // 원하는 작업 수행
+                                            }
+                                            .addOnFailureListener {
+                                                // 저장 실패
+                                                // 에러 처리 등 필요한 작업 수행
+                                            }
+                                    }
+
+
+
                             }
+
                             // 전송 완료 후 getTransferCount 함수 호출
                             // val tokenId = transactionReceipt?.tokenId[i]
                             // val transferCount = mynft.getTransferCount(tokenId).send()

@@ -9,6 +9,7 @@ import com.example.contract.MyNFT
 import com.example.app_ui.databinding.ActivityNewnftBinding
 import com.example.app_ui.databinding.ActivitySendBinding
 import com.example.contract.MyNFT.NFTCREATED_EVENT
+import com.google.firebase.database.DataSnapshot
 import org.web3j.abi.TypeReference
 import org.web3j.abi.datatypes.Address
 import org.web3j.abi.datatypes.Event
@@ -25,7 +26,17 @@ import org.web3j.protocol.http.HttpService
 import org.web3j.tx.Contract
 import org.web3j.crypto.Credentials
 import java.math.BigInteger
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
+
+data class NFTData(
+    val nft_hash: String = "",
+    val nft_cg: String = "전체",
+    val nft_alias: String = "(이름없음)"
+)
+
+var new_alias = "(이름없음)"
 
 class NewnftActivity : ComponentActivity(){
     private lateinit var binding: ActivityNewnftBinding
@@ -71,14 +82,56 @@ class NewnftActivity : ComponentActivity(){
             }
     }
 
+
+
+
     // 토큰 아이디 반환
     private fun newTokenId(transactionReceipt: TransactionReceipt) {
         val eventResponses = mynft.getNFTCreatedEvents(transactionReceipt)
         for (response in eventResponses) {
+
+            // Firebase 실시간 데이터베이스에 tokenID 저장
+            val firebaseDatabase: FirebaseDatabase = FirebaseDatabase.getInstance()
+            val databaseReference: DatabaseReference = firebaseDatabase.reference
             val tokenId = response.tokenId
-            println("Token ID: $tokenId") // 데베 저장하는 로직으로 바꾸기
+            val userNftRef: DatabaseReference = databaseReference.child("users").child(user_id).child("nft")
+
+            userNftRef.get()
+                .addOnSuccessListener { dataSnapshot: DataSnapshot ->
+                    val nftCount = dataSnapshot.childrenCount.toInt()
+
+                    val forNewNftRef: DatabaseReference = userNftRef.child(nftCount.toString())
+
+                    println("Token ID: $tokenId") // DB 저장하는 로직으로 바꾸기
+
+                    //val alias = findViewById<EditText>(R.id.et_new_alias).text.toString()
+
+                    val nftData = NFTData(tokenId.toString(), "전체", new_alias)
+
+                    println("생성된 NFT 저장중...")
+
+                    forNewNftRef.setValue(nftData)
+                        .addOnSuccessListener {
+                            // 저장 성공적으로 완료됨
+                            println("생성된 NFT 저장 완료")
+                            // 원하는 작업 수행
+                        }
+                        .addOnFailureListener {
+                            // 저장 실패
+                            // 에러 처리 등 필요한 작업 수행
+                        }
+
+
+                }
+
+
+
+
+
         }
     }
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,8 +149,11 @@ class NewnftActivity : ComponentActivity(){
                 BigInteger(findViewById<EditText>(R.id.et_date_purchase).text.toString())
             val additionalInfo = findViewById<EditText>(R.id.tv_new_memo).text.toString()
             val privateKey = findViewById<EditText>(R.id.et_private_key).text.toString()
+            val alias = findViewById<EditText>(R.id.et_new_alias).text.toString()
 
             val credentials = Credentials.create(privateKey)
+
+            new_alias = if (alias.trim().isNotEmpty()) alias.trim() else "(이름 없음)"
             mynft = MyNFT.load(contractAddress, web3j, credentials, DefaultGasProvider())
             createNft(brand, modelName, manufacturer, purchaseSource, purchaseDate, additionalInfo)
         }

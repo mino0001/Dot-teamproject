@@ -4,6 +4,7 @@ import android.R
 import android.os.Build
 import android.os.Bundle
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.annotation.RequiresApi
 import com.example.app_ui.databinding.ActivityNftinfoBinding
@@ -20,11 +21,12 @@ import org.web3j.tx.gas.DefaultGasProvider
 import java.math.BigInteger
 
 
-class NftinfoActivity : ComponentActivity(){
+class NftinfoActivity : ComponentActivity() {
     private var binding: ActivityNftinfoBinding? = null
 
     // 데베 쓰면 지울부분
-    val web3j = Web3j.build(HttpService("https://eth-sepolia.g.alchemy.com/v2/musyAUHHyrKtOkx90Ygr7A-q7_1AYfLH"))
+    val web3j =
+        Web3j.build(HttpService("https://eth-sepolia.g.alchemy.com/v2/musyAUHHyrKtOkx90Ygr7A-q7_1AYfLH"))
     val contractAddress = "0x8481b9693fFabb79463B03566af2391ef150f957"
     val credentials = Credentials.create("Privatekey")
     lateinit var mynft: MyNFT
@@ -53,7 +55,7 @@ class NftinfoActivity : ComponentActivity(){
         // null일 경우 0 반환 -> 오류메세지 띄워야함
         // val tokenId = BigInteger.valueOf(data?.tokenId ?: 0)
         val tokenId = BigInteger.ONE
-        if (tokenId == BigInteger.ZERO){
+        if (tokenId == BigInteger.ZERO) {
             Toast.makeText(this, "Please enter a valid tokenId.", Toast.LENGTH_SHORT).show()
             return
         }
@@ -62,16 +64,16 @@ class NftinfoActivity : ComponentActivity(){
         //바인딩하기
         var data = intent.getParcelableExtra("data", Nft::class.java)
 
-        if (data!!.alias!!.isEmpty()){
+        if (data!!.alias!!.isEmpty()) {
             binding!!.tvInfoTitle.text = data!!.more //token id로
         } else {
             binding!!.tvInfoTitle.text = data!!.alias
         }
 
 
-        if(data!!.add_info!!.equals("")){
+        if (data!!.add_info!!.equals("")) {
             binding!!.tvInfoAdditionalInfo.text = "없음"
-        }else binding!!.tvInfoAdditionalInfo.text = data!!.add_info
+        } else binding!!.tvInfoAdditionalInfo.text = data!!.add_info
 
         binding!!.spinnerNftinfoCategory.adapter = ArrayAdapter(
             this,
@@ -84,10 +86,10 @@ class NftinfoActivity : ComponentActivity(){
 
 
         //뒤로가기 버튼
-        binding!!.btnBack.setOnClickListener{ finish() }
+        binding!!.btnBack.setOnClickListener { finish() }
 
         //확인 버튼 클릭 시 updateNftCategoryInFirebase 함수 호출
-        binding!!.btnInfoSubmit.setOnClickListener{
+        binding!!.btnInfoSubmit.setOnClickListener {
             val selectedValue = binding!!.spinnerNftinfoCategory.selectedItem as String
             val position = intent.getIntExtra("position", -1)
             nftList[position].category = selectedValue
@@ -100,11 +102,10 @@ class NftinfoActivity : ComponentActivity(){
         }
 
 
-
         /***
          * 일단 nft 주소로 id로 QR 만들어 둠
          ***/
-        var ImageQRcode = HomeuserActivity().generaterQRCode(binding!!.tvInfoAddress.text.toString())
+        var ImageQRcode = HomeuserActivity().generaterQRCode(binding!!.tvInfoNftId.text.toString())
         binding!!.ivNftQr.setImageBitmap(ImageQRcode)
 
     }
@@ -141,9 +142,6 @@ class NftinfoActivity : ComponentActivity(){
     }
 
 
-
-
-    }
     // TokenData 가져오는 함수
     private fun getTokenData(tokenId: BigInteger) {
         mynft.getTokenData(tokenId)

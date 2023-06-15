@@ -8,6 +8,7 @@ import androidx.activity.ComponentActivity
 import com.example.contract.MyNFT
 import com.example.app_ui.databinding.ActivityNewnftBinding
 import com.example.app_ui.databinding.ActivitySendBinding
+import com.example.contract.MyNFT.NFTCREATED_EVENT
 import org.web3j.abi.TypeReference
 import org.web3j.abi.datatypes.Address
 import org.web3j.abi.datatypes.Event
@@ -54,6 +55,9 @@ class NewnftActivity : ComponentActivity(){
                 runOnUiThread {
                     Toast.makeText(this@NewnftActivity, "트랜잭션이 성공적으로 전송되었습니다.", Toast.LENGTH_SHORT).show()
                 }
+                if (transactionReceipt != null) {
+                    newTokenId(transactionReceipt)
+                }
                 // TransactionReceipt 객체에서 토큰 아이디를 추출
                 // val tokenId = extractTokenIdFromReceipt(transactionReceipt)
                 // 토큰 아이디를 활용하여 추가 작업 수행
@@ -67,24 +71,15 @@ class NewnftActivity : ComponentActivity(){
             }
     }
 
-    /*
-    // TransactionReceipt에서 토큰 아이디 추출
-    private fun extractTokenIdFromReceipt(receipt: TransactionReceipt?): BigInteger {
-        // TransactionReceipt의 logs에서 이벤트 로그를 추출
-        val logs = receipt?.logs ?: emptyList()
-        // "NFTCreated" 이벤트 로그 추출
-        val nftCreatedEvent = MyNFT.NFTCreatedEventResponse()
-        val event = nftCreatedEvent.getEvents(logs).singleOrNull() ?: return BigInteger.ZERO
-        // 토큰 아이디 반환
-        return event.newTokenId
+    // 토큰 아이디 반환
+    private fun newTokenId(transactionReceipt: TransactionReceipt) {
+        val eventResponses = mynft.getNFTCreatedEvents(transactionReceipt)
+        for (response in eventResponses) {
+            val tokenId = response.tokenId
+            println("Token ID: $tokenId") // 데베 저장하는 로직으로 바꾸기
+        }
     }
 
-    // 토큰 아이디 활용하여 추가 작업 수행
-    private fun processTokenId(tokenId: BigInteger) {
-        // 토큰 아이디를 활용하여 원하는 작업 수행
-        // 예시: 토큰 아이디를 UI에 표시하거나 로컬 저장소에 저장 등
-    }
-*/
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

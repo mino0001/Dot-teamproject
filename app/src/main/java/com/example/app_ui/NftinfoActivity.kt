@@ -52,7 +52,8 @@ class NftinfoActivity : ComponentActivity(){
         // TokenData 가져오기
         // 토큰아이디 받아오는거 구현해야함
         // null일 경우 0 반환 -> 오류메세지 띄워야함
-        val tokenId = BigInteger.valueOf(data?.tokenId ?: 0)
+        // val tokenId = BigInteger.valueOf(data?.tokenId ?: 0)
+        val tokenId = BigInteger.ONE
         if (tokenId == BigInteger.ZERO){
             Toast.makeText(this, "Please enter a valid tokenId.", Toast.LENGTH_SHORT).show()
             return

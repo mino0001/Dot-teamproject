@@ -77,13 +77,12 @@
             android:label="@string/title_activity_newnft"
             android:theme="@style/Theme.App_ui" />
         <activity
-            android:name=".LoginActivity"
-            android:label="@string/title_activity_login"
+            android:name=".MainActivity"
             android:exported="false"
             android:theme="@style/Theme.App_ui">
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".LoginActivity"
             android:exported="true"
              >
             <intent-filter>

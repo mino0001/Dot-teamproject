@@ -10,7 +10,6 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/toolbar_main"
-        layout_height=""
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="#FFFFFF"
@@ -27,6 +26,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
         android:text="TextView"
         android:textSize="30sp" />
 
@@ -34,25 +35,20 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_category"
-        layout_height=""
+
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="#ffffff"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
+        android:showDividers="middle"
+        android:divider="@drawable/divider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar_main"
         app:titleTextColor="#FFFFFF">
 
-        <TextView
-            android:id="@+id/tv_category"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="카테고리"
-            android:textColor="@color/black"
-            android:textSize="25sp" />
 
         <CheckBox
             android:id="@+id/cb_categoryall"

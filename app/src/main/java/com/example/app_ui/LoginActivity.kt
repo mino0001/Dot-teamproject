@@ -96,6 +96,14 @@ class LoginActivity : ComponentActivity() {
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
+
+                    val user = auth.currentUser
+                    user?.let {
+                        // 사용자가 로그인한 경우에만 UID를 가져와서 user_id 변수에 저장
+                        val uid = user.uid
+                        user_id = uid
+                    }
+
                     // 로그인 성공 시 MainActivity로 이동
                     val intent = Intent(this@LoginActivity, MainActivity::class.java)
                     startActivity(intent)

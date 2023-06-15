@@ -17,12 +17,13 @@
         android:orientation="vertical">
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/iv_noti_icon"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_marginTop="3dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            app:layout_constraintEnd_toStartOf="@+id/alarm_title"
+            android:layout_marginStart="25dp"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/alarm_title"
             app:srcCompat="@drawable/icon_noti_coin" />
 
@@ -30,13 +31,13 @@
             android:id="@+id/alarm_title"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:layout_marginStart="52dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="3dp"
             android:text="title of alarm"
             android:textSize="24dp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/iv_noti_icon"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
 
@@ -46,8 +47,9 @@
             android:layout_height="40dp"
             android:layout_marginTop="4dp"
             android:text="a detailed explanation"
-            android:textColor="#2C3E50"
+            android:textColor="@color/black"
             android:textSize="24dp"
+            android:layout_marginStart="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/alarm_title"
             app:layout_constraintTop_toBottomOf="@+id/alarm_title" />

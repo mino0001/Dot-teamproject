@@ -52,12 +52,12 @@ class MainActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
 
         // 로그인 여부 확인
-        if (auth.currentUser == null) {
-            // 로그인되어 있지 않으면 LoginActivity로 이동
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
+//        if (auth.currentUser == null) {
+//            // 로그인되어 있지 않으면 LoginActivity로 이동
+//            val intent = Intent(this, LoginActivity::class.java)
+//            startActivity(intent)
+//            finish()
+//        }
 
 
 //        //firebase 초기화 + 데이터베이스 연결
@@ -121,6 +121,7 @@ class MainActivity : AppCompatActivity() {
                 handler.postDelayed({ backButtonPressedOnce = false }, 2000)
             }}
     }
+
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(

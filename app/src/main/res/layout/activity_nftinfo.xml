@@ -62,6 +62,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="NFT1"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textColor="@color/black"
         android:textSize="50sp"
         android:textStyle="bold" />
 
@@ -77,6 +80,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="NFT 토큰 ID"
+        android:textColor="@color/black"
+
         android:textSize="24sp"
         android:textStyle="bold" />
 
@@ -102,6 +107,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="브랜드"
+        android:textColor="@color/black"
         android:textSize="24sp"
         android:textStyle="bold" />
 
@@ -120,6 +126,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:text="모델명"
+        android:textColor="@color/black"
         android:textSize="24sp"
         android:textStyle="bold" />
 
@@ -138,6 +145,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:text="제조국/제조사"
+        android:textColor="@color/black"
         android:textSize="24sp"
         android:textStyle="bold" />
 
@@ -156,6 +164,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:text="구매처"
+        android:textColor="@color/black"
         android:textSize="24sp"
         android:textStyle="bold" />
 
@@ -174,6 +183,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:text="구매일자"
+        android:textColor="@color/black"
         android:textSize="24sp"
         android:textStyle="bold" />
 
@@ -192,6 +202,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:text="추가사항"
+        android:textColor="@color/black"
         android:textSize="24sp"
         android:textStyle="bold" />
 
@@ -241,6 +252,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:text="송신자 주소"
+            android:textColor="@color/black"
             android:textSize="24sp"
             android:textStyle="bold" />
 
@@ -261,6 +273,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="트랜잭션 해시"
+            android:textColor="@color/black"
             android:textSize="24sp"
             android:textStyle="bold" />
 
@@ -278,6 +291,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="거래 횟수"
+            android:textColor="@color/black"
             android:textSize="24sp"
             android:textStyle="bold" />
 
@@ -297,6 +311,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:text="별칭"
+        android:textColor="@color/black"
         android:textSize="24sp"
         android:textStyle="bold" />
 
@@ -312,6 +327,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:text="카테고리 설정"
+        android:textColor="@color/black"
         android:textSize="24sp"
         android:textStyle="bold" />
 

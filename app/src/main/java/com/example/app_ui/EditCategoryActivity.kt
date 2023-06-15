@@ -1,34 +1,43 @@
 package com.example.app_ui
 
+
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
+
 import android.os.Bundle
-import android.view.View
+
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.EditText
+
 import android.widget.ListView
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
+import com.example.app_ui.databinding.ActivityEditCategoryBinding
+
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.firestore.FirebaseFirestore
+import java.io.Serializable
+
 
 // 카테고리 추가 및 삭제하는 액티비티
 class EditCategoryActivity : AppCompatActivity() {
 
 
-    private lateinit var editText: EditText
+    //private lateinit var editText: EditText
     private lateinit var listView: ListView
     private lateinit var adapter: ArrayAdapter<String>
     private val itemList = ArrayList<String>()
     private lateinit var database: DatabaseReference
+    private lateinit var binding: ActivityEditCategoryBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_edit_category)
+        binding = ActivityEditCategoryBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         var arr : Array<String> = resources.getStringArray(R.array.category_list)
 
         itemList.addAll(categoryArray)
+        itemList.removeAt(0)
 
         // FirebaseDatabase 초기화
         database = FirebaseDatabase.getInstance().reference
@@ -41,42 +50,37 @@ class EditCategoryActivity : AppCompatActivity() {
             listView.setItemChecked(position, true)
             true
         }
+
+        binding.btnAdd.setOnClickListener{
+            addItem()
+        }
+
+        binding.btnDelete.setOnClickListener{
+            deleteItem()
+        }
+
+        binding.btnEditCateSubmit.setOnClickListener{
+            saveChangesToFirebase()
+        }
     }
 
 
-    fun addItem(view: View) {
-        editText = findViewById(R.id.editText)
-        val newItem = editText.text.toString().trim()
+    fun addItem() {
+        //var binding = ActivityEditCategoryBinding.inflate(layoutInflater)
+
+        val editText = binding.etAddNewCate.text
+        val newItem = editText.toString().trim()
         if (newItem.isNotEmpty()) {
             // categoryArray에 새로운 카테고리 추가
-            categoryArray = categoryArray.plus(newItem)
+            //categoryArray = categoryArray.plus(newItem)
             itemList.add(newItem)
             adapter.notifyDataSetChanged()
-            editText.text.clear()
-
-            // Firebase Realtime Database에 데이터 추가
-            val categoryRef = database.child("users").child(user_id).child("category").child("cg_name")
-            categoryRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val categoryData = snapshot.getValue() as? ArrayList<String>
-                    if (categoryData != null) {
-                        // 새로운 카테고리 추가
-                        categoryData.add(newItem)
-                        // 업데이트된 데이터 다시 설정
-                        categoryRef.setValue(categoryData)
-                    }
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    // 데이터 가져오기 실패 시 처리
-                }
-            })
-
+            editText.clear()
 
         }
     }
 
-    fun deleteItem(view: View) {
+    fun deleteItem() {
         val checkedItems = listView.checkedItemPositions
         val deletedItems = mutableListOf<String>()
 
@@ -87,28 +91,48 @@ class EditCategoryActivity : AppCompatActivity() {
                 deletedItems.add(deletedItem)
             }
         }
-        categoryArray = categoryArray.filterNot { it in deletedItems.toTypedArray() }.toTypedArray()
+        //categoryArray = categoryArray.filterNot { it in deletedItems.toTypedArray() }.toTypedArray()
         listView.clearChoices()
         adapter.notifyDataSetChanged()
 
-        // Firebase Realtime Database에서 데이터 삭제
-        val categoryRef = database.child("users").child(user_id).child("category").child("cg_name")
-        categoryRef.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val categoryData = snapshot.getValue() as? ArrayList<String>
-                if (categoryData != null) {
-                    // 삭제된 카테고리 제거
-                    categoryData.removeAll(deletedItems)
-                    // 업데이트된 데이터 다시 설정
-                    categoryRef.setValue(categoryData)
-                }
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                // 데이터 가져오기 실패 시 처리
-            }
-        })
-
 
     }
+
+    fun saveChangesToFirebase() {
+        // 수정된 카테고리 정보를 Firebase에 업데이트하는 로직 작성
+
+        // 예시: Firebase의 "categories" 컬렉션을 업데이트
+        val updatedCategories: ArrayList<String> = itemList
+        val database = FirebaseDatabase.getInstance()
+        val categoryRef = database.reference.child("users").child(user_id).child("category").child("cg_name")
+
+
+// 업데이트 수행
+        categoryRef.setValue(itemList)
+            .addOnSuccessListener {
+                // 업데이트 성공
+                // 처리할 작업 추가
+
+                // MainFragment로 데이터 전달
+                val homeFragment = HomeFragment()
+                val bundle = Bundle()
+                bundle.putStringArrayList("categoryList", itemList)
+                homeFragment.arguments = bundle
+
+                // homeragment로 화면 전환
+//               supportFragmentManager.beginTransaction()
+//                    .replace(R.id.container_home, homeFragment)
+//                    .commit()
+
+                intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+            .addOnFailureListener {
+                // 업데이트 실패
+                // 에러 처리 로직 추가
+            }
+    }
+
+
 }

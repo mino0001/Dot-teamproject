@@ -26,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/edittext_border"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="16dp"
             android:layout_marginBottom="10dp"
             android:padding="10dp"
             android:orientation="vertical">
@@ -35,6 +35,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="정보 입력"
+                android:textColor="@color/black"
                 android:textSize="24sp"
                 android:textStyle="bold"/>
 
@@ -44,6 +45,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:text="브랜드"
+                android:textColor="@color/black"
                 android:textStyle="bold"
                 android:textSize="18sp"
                  />
@@ -66,6 +68,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:text="모델명"
+                android:textColor="@color/black"
                 android:textStyle="bold"
                 android:textSize="18sp"
                 />
@@ -88,6 +91,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:text="제조국/제조사"
+                android:textColor="@color/black"
                 android:textStyle="bold"
                 android:textSize="18sp"
                 />
@@ -110,6 +114,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:text="구매처"
+                android:textColor="@color/black"
                 android:textStyle="bold"
                 android:textSize="18sp"
                 />
@@ -132,6 +137,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:text="구매 일자"
+                android:textColor="@color/black"
                 android:textStyle="bold"
                 android:textSize="18sp"
                 />
@@ -171,13 +177,13 @@
                 android:id="@+id/tv_new_memo"
                 android:layout_width="match_parent"
                 android:layout_height="130dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/edittext_border"
                 android:hint="기타사항을 입력하세요. \n\n 예시 : 사용 기간, 흠집이나 파손 여부, 수리 내역, AS 가능 날짜 등 "
                 android:inputType="textMultiLine"
-                android:layout_marginTop="10dp"
-                android:padding="5dp"
-                android:background="@drawable/edittext_border"
                 android:maxLength="500"
                 android:maxLines="10"
+                android:padding="5dp"
                 android:textColor="@color/black" />
 
         </LinearLayout>
@@ -195,28 +201,27 @@
 
             <Button
                 android:id="@+id/btn_new_make"
-                android:layout_width="wrap_content"
+                android:layout_width="130dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
                 android:background="@drawable/btn_border"
                 android:text="생성"
                 android:textColor="#ffffff"
-                android:textSize="20sp"
+                android:textSize="24sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/btn_new_cancel"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:layout_editor_absoluteX="323dp" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <Button
                 android:id="@+id/btn_new_cancel"
-                android:layout_width="wrap_content"
+                android:layout_width="130dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
                 android:background="@drawable/btn_border"
                 android:text="취소"
                 android:textColor="#ffffff"
-                android:textSize="20sp"
+                android:textSize="24sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/btn_new_make"
                 app:layout_constraintTop_toTopOf="@+id/btn_new_make" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -48,7 +48,6 @@
         android:layout_margin="10dp"
         android:background="@drawable/edittext_border"
         android:orientation="vertical"
-        android:paddingTop="5dp"
         android:paddingBottom="10dp">
 
 
@@ -83,13 +82,13 @@
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="@+id/iv_send_camera"
                 app:layout_constraintStart_toEndOf="@+id/iv_send_camera"
-                app:layout_constraintTop_toBottomOf="@+id/tv_send_user_id" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_send_user_email" />
 
             <TextView
-                android:id="@+id/tv_send_user_id"
+                android:id="@+id/tv_send_user_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="이름"
+                android:text="이메일"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="@+id/tv_more_user_address"
@@ -107,15 +106,20 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
+            android:id="@+id/tv_show_user"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="4dp"
-            android:text="> 내 정보 보기"
+            android:layout_marginTop="8dp"
+            android:text="> My QR 보기"
+            android:textColor="@color/black"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"/>
 
     </LinearLayout>
 
@@ -142,7 +146,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="앱 버전  :    "
+            android:text="앱 버전  :  1.0.0"
             android:textSize="24sp"
             android:textStyle="bold" />
 
@@ -197,7 +201,7 @@
             android:id="@+id/switch_noti"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:text="푸시 알림"
             android:textSize="24sp"/>
 

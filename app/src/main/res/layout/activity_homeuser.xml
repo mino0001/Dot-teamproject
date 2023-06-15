@@ -46,6 +46,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:text="내 주소"
+                android:textStyle="bold"
                 android:textColor="@color/black"
                 android:textSize="25sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -78,69 +79,48 @@
             android:id="@+id/tv_wallet_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:text="Wallet Address"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="@+id/iv_user_qr"
+            app:layout_constraintHorizontal_bias="0.492"
             app:layout_constraintStart_toStartOf="@+id/iv_user_qr"
-            app:layout_constraintTop_toBottomOf="@+id/tv_user_issue_date" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_user_name" />
 
         <TextView
             android:id="@+id/tv_user_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="TeamBYM@sookmyung.ac.kr"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="@+id/iv_user_qr"
+            app:layout_constraintStart_toStartOf="@+id/iv_user_qr"
+            app:layout_constraintTop_toBottomOf="@+id/tv_home_email" />
+
+        <TextView
+            android:id="@+id/tv_home_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:text="Team BYM"
+            android:text="Email Address"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="@+id/iv_user_qr"
-            app:layout_constraintStart_toEndOf="@+id/tv_name"
-            app:layout_constraintTop_toBottomOf="@+id/iv_user_qr" />
-
-        <TextView
-            android:id="@+id/tv_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:text="Name"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toStartOf="@+id/tv_user_name"
             app:layout_constraintStart_toStartOf="@+id/iv_user_qr"
             app:layout_constraintTop_toBottomOf="@+id/iv_user_qr" />
-
-        <TextView
-            android:id="@+id/tv_issue_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            android:text="Issue Date"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toStartOf="@+id/tv_user_issue_date"
-            app:layout_constraintStart_toStartOf="@+id/iv_user_qr"
-            app:layout_constraintTop_toBottomOf="@+id/tv_name" />
-
-        <TextView
-            android:id="@+id/tv_user_issue_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:text="2023. 05. 22"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="@+id/iv_user_qr"
-            app:layout_constraintStart_toEndOf="@+id/tv_issue_date"
-            app:layout_constraintTop_toBottomOf="@+id/tv_user_name" />
 
         <TextView
             android:id="@+id/tv_user_wallet_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:layout_marginBottom="32dp"
-            android:text="thisis13wallet437address3235"
-            android:maxLines="1"
             android:ellipsize="end"
+            android:maxLines="1"
+            android:text="thisis13wallet437address3235"
+            android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/iv_copy"

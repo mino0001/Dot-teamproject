@@ -1,9 +1,9 @@
  package com.example.app_ui
 
 
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
-
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -18,9 +18,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.app_ui.databinding.FragmentHomeBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlin.math.log
 
 
-val nftList = mutableListOf<Nft>()
+ val nftList = mutableListOf<Nft>()
 lateinit var categoryArray: Array<String>
 var count = 0
 lateinit var nftAdapter : NftAdapter
@@ -29,13 +34,13 @@ lateinit var nftAdapter : NftAdapter
 class HomeFragment : Fragment() {
 
     private lateinit var auth: FirebaseAuth
-
-    //뷰가 사라질 때, 즉 메모리에서 날라갈 때 같이 날리기 위해 따로 빼두기
     private var fragmentHomeBinding : FragmentHomeBinding? =null
     private var intent :Intent? = null
-    lateinit var categoryArrayAll: Array<String>
+    private var loadingDialog: Dialog? = null
+    private val PREFS_NAME = "MyPrefs"
+    private val PREF_FIRST_LAUNCH = "firstLaunch"
 
-    //private lateinit var nftList: MutableList<Nft>
+
 
     companion object {
 
@@ -53,10 +58,35 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        var updatedCategories : ArrayList<String>? = null
+
+        var isFirstLaunchValue = isFirstLaunch()
+
+
+
 
         fragmentHomeBinding!!.toolbar.inflateMenu(R.menu.toolbar_menu)
         initRecycler()
-        setupCategorySpinnerHandler()
+
+
+
+        val arguments = arguments
+        if (arguments != null) {
+            updatedCategories = arguments.getStringArrayList("categoryList")
+            val adapter = ArrayAdapter(
+                requireContext(),
+                android.R.layout.simple_spinner_item,
+                updatedCategories as List<String>
+            )
+            fragmentHomeBinding!!.spinnerCategory.adapter = adapter
+        }else if (updatedCategories == null) {
+            if (isFirstLaunchValue) {
+                showLoadingDialog()
+            }
+            setupCategorySpinnerHandler()
+
+        }
+
 
 
         fragmentHomeBinding!!.btnFolder.setOnClickListener {
@@ -115,7 +145,11 @@ class HomeFragment : Fragment() {
 
         val binding : FragmentHomeBinding = FragmentHomeBinding.inflate(inflater,container,false)
         fragmentHomeBinding = binding
+        val isFirstLaunchValue = isFirstLaunch()
 
+        if (isFirstLaunchValue) {
+            showLoadingDialog()
+        }
 
         return fragmentHomeBinding!!.root
     }
@@ -127,6 +161,34 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         fragmentHomeBinding = null
         super.onDestroyView()
+    }
+
+    private fun isFirstLaunch(): Boolean {
+        val sharedPref = requireActivity().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        var isFirstLaunch = sharedPref.getBoolean(PREF_FIRST_LAUNCH, true)
+
+        // 최초 실행 이후에는 값을 false로 업데이트합니다.
+        if (isFirstLaunch) {
+            val editor = sharedPref.edit()
+            editor.putBoolean(PREF_FIRST_LAUNCH, false)
+            editor.apply()
+            isFirstLaunch = false
+        }
+
+        return isFirstLaunch
+    }
+    private fun showLoadingDialog() {
+        val scope = CoroutineScope(Dispatchers.Default)
+
+        loadingDialog = Dialog(requireContext())
+        loadingDialog?.setContentView(R.layout.activity_screen)
+        loadingDialog?.setCancelable(false)
+        loadingDialog?.show()
+
+        scope.launch {
+            delay(1000) // 3초 대기
+            loadingDialog?.dismiss()
+        }
     }
 
     fun initRecycler(){
@@ -147,7 +209,6 @@ class HomeFragment : Fragment() {
     private fun setupCategorySpinnerHandler(){
 
         val databaseReference: DatabaseReference = FirebaseDatabase.getInstance().reference
-        //val userId = "userid1"
         val categoryRef: DatabaseReference = databaseReference
 
         //TODO: 데이터베이스에서 카테고리 정보 가져오기
@@ -155,7 +216,6 @@ class HomeFragment : Fragment() {
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val categoryList: MutableList<String> = mutableListOf()
-
                     categoryList.add("전체")
 
                     for (snapshot in dataSnapshot.children) {
@@ -167,11 +227,16 @@ class HomeFragment : Fragment() {
                     }
 
                     categoryArray = categoryList.toTypedArray()
-                    fragmentHomeBinding!!.spinnerCategory.adapter = ArrayAdapter(
-                        requireContext(),
-                        android.R.layout.simple_spinner_dropdown_item,
-                        categoryArray
-                    )
+                    try {
+                        fragmentHomeBinding!!.spinnerCategory.adapter = ArrayAdapter(
+                            requireContext(),
+                            android.R.layout.simple_spinner_dropdown_item,
+                            categoryArray
+                        )
+                    }catch (e: Exception) {
+
+                    }
+
 
 
                 }
@@ -218,7 +283,10 @@ class HomeFragment : Fragment() {
                 override fun onCancelled(error: DatabaseError) {
                     // Handle database error
                 }
-            })
+            }
+
+
+            )
 
 
 

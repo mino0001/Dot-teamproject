@@ -17,7 +17,7 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="보낼 NFT"
+        android:text="전송할 NFT"
         android:textColor="@color/black"
         android:textSize="30sp"
         android:textStyle="bold" />
@@ -27,11 +27,11 @@
         android:id="@+id/layout_1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:layout_marginBottom="10dp"
         android:background="@drawable/edittext_border"
         android:orientation="vertical"
-        android:paddingTop="15dp"
+        android:paddingTop="10dp"
         android:paddingBottom="10dp">
 
         <TextView
@@ -39,10 +39,10 @@
             android:layout_height="wrap_content"
             android:text="수신자 정보"
             android:textColor="@color/black"
-            android:textSize="24sp"
+            android:textSize="26sp"
             android:textStyle="bold"
             android:layout_marginBottom="10dp"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -52,45 +52,50 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingBottom="10dp">
+            android:paddingVertical="10dp"
+            android:paddingStart="10dp">
 
             <TextView
-                android:id="@+id/tv_more_user_address"
+                android:id="@+id/tv_send_user_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:text="지갑주소"
                 android:textColor="@color/black"
                 android:textSize="25sp"
                 app:layout_constraintStart_toStartOf="@+id/tv_send_user_id"
-                app:layout_constraintTop_toTopOf="@+id/et_send_address" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_send_user_id" />
 
             <EditText
                 android:id="@+id/et_send_user_id"
-                android:layout_width="172dp"
-                android:layout_height="40dp"
+                android:layout_width="185dp"
+                android:layout_height="48dp"
                 android:background="@drawable/edittext_border"
-                android:hint="아이디를 입력하세요"
+                android:hint="이메일 입력하세요"
+                android:paddingStart="5dp"
                 android:inputType="textPersonName"
                 android:maxLength="20"
                 android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_send_user_id"
                 app:layout_constraintEnd_toEndOf="@+id/et_send_address"
                 app:layout_constraintStart_toStartOf="@+id/et_send_address"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="@id/tv_send_user_id" />
 
             <EditText
                 android:id="@+id/et_send_address"
-                android:layout_width="172dp"
-                android:layout_height="40dp"
+                android:layout_width="185dp"
+                android:layout_height="48dp"
                 android:layout_gravity="right"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginStart="15dp"
+                android:paddingStart="5dp"
                 android:background="@drawable/edittext_border"
                 android:hint="지갑주소를 입력하세요"
                 android:inputType="textPersonName"
                 android:maxLength="50"
                 android:textColor="@color/black"
-                app:layout_constraintStart_toEndOf="@+id/tv_more_user_address"
-                app:layout_constraintTop_toBottomOf="@+id/et_send_user_id" />
+                app:layout_constraintBottom_toBottomOf="@+id/tv_send_user_address"
+                app:layout_constraintStart_toEndOf="@+id/tv_send_user_address"
+                app:layout_constraintTop_toTopOf="@+id/tv_send_user_address" />
 
             <TextView
                 android:id="@+id/tv_send_user_id"
@@ -98,7 +103,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="8dp"
-                android:text="아이디"
+                android:text="이메일"
                 android:textColor="@color/black"
                 android:textSize="25sp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -106,8 +111,8 @@
 
             <ImageView
                 android:id="@+id/iv_send_camera"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="4dp"
                 android:src="@drawable/icon_camera"
@@ -127,7 +132,8 @@
         android:padding="5dp"
         android:paddingBottom="10dp"
         android:background="@drawable/edittext_border"
-
+        android:showDividers="middle"
+        android:divider="@drawable/divider"
         android:orientation="vertical">
 
         <TextView
@@ -135,10 +141,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginVertical="8dp"
             android:text="NFT 목록"
             android:textColor="@color/black"
-            android:textSize="24sp"
+            android:textSize="26sp"
             android:textStyle="bold"
              />
 
@@ -146,7 +152,6 @@
             android:id="@+id/rv_send_nftlist"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             app:layout_constrainedHeight = "true"
          />
@@ -159,7 +164,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:padding="10dp"
+        >
 
         <TextView
             android:layout_width="wrap_content"
@@ -203,8 +209,9 @@
             android:id="@+id/tv_memo"
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:hint="(선택) 기타사항을 입력하세요. \n (최대 100자까지 입력 가능) "
+            android:hint=" (선택) 기타사항을 입력하세요. \n\n (최대 100자까지 입력 가능) "
             android:inputType="textMultiLine"
+            android:text=""
             android:maxLength="100"
             android:maxLines="5"
             android:textColor="@color/black" />
@@ -223,28 +230,27 @@
 
         <Button
             android:id="@+id/btn_transmit"
-            android:layout_width="wrap_content"
+            android:layout_width="130dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
             android:background="@drawable/btn_border"
             android:text="전송"
             android:textColor="#ffffff"
-            android:textSize="20sp"
+            android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/btn_cancel"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:layout_editor_absoluteX="323dp" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/btn_cancel"
-            android:layout_width="wrap_content"
+            android:layout_width="130dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
             android:background="@drawable/btn_border"
             android:text="취소"
             android:textColor="#ffffff"
-            android:textSize="20sp"
+            android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/btn_transmit"
             app:layout_constraintTop_toTopOf="@+id/btn_transmit" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

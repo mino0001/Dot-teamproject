@@ -2,20 +2,24 @@ package com.example.app_ui
 
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.example.app_ui.databinding.FragmentHomeBinding
 import com.example.app_ui.databinding.FragmentMoreBinding
 
-private lateinit var binding: FragmentMoreBinding
+
 
 class MoreFragment : Fragment() {
 
     private lateinit var sharedPref: SharedPreferences
     private lateinit var editor: SharedPreferences.Editor
+    private var fragmentMoreBinding : FragmentMoreBinding? =null
+
 
     private val NOTIFICATION_ENABLED_KEY = "notification_enabled"
     companion object {
@@ -39,13 +43,23 @@ class MoreFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentMoreBinding.inflate(inflater, container, false)
+        val binding = FragmentMoreBinding.inflate(inflater, container, false)
         val view = binding.root
 
         sharedPref = requireActivity().getSharedPreferences("notification_pref", Context.MODE_PRIVATE)
         editor = sharedPref.edit()
 
         val notificationSwitch = binding.switchNoti // 알림 설정 스위치
+
+        /**
+         * 이메일 지갑주소
+         */
+
+
+        binding?.tvShowUser?.setOnClickListener{
+            val intent = Intent(context, HomeuserActivity::class.java)
+            startActivity(intent)
+        }
 
         // 알림 설정 스위치 초기 상태 설정
         val notificationEnabled = sharedPref.getBoolean(NOTIFICATION_ENABLED_KEY, false)
@@ -71,6 +85,9 @@ class MoreFragment : Fragment() {
         return view
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
 
+    }
 }

@@ -85,7 +85,7 @@ class EditActivity : ComponentActivity() {
                             nftList[index].category = selectedCategory.toString()
 
                             // Firebase Realtime Database에 데이터 업데이트
-                            val nftRef = database.child("users").child(user_id).child("nft").child(nftList[index].more)
+                            val nftRef = database.child("users").child(user_id).child("nft").child(nftList[index].toString())
                             nftRef.child("nft_cg").setValue(selectedCategory.toString())
 
                         }
@@ -116,4 +116,6 @@ class EditActivity : ComponentActivity() {
         }
 
     }
+
+
 }

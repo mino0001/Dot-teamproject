@@ -19,6 +19,7 @@ import org.web3j.protocol.Web3j
 import org.web3j.protocol.core.methods.response.TransactionReceipt
 import org.web3j.protocol.http.HttpService
 import org.web3j.tx.gas.DefaultGasProvider
+import java.math.BigInteger
 
 
 class Send2Activity : ComponentActivity() {
@@ -61,7 +62,7 @@ class Send2Activity : ComponentActivity() {
         binding.btnTransmit.setOnClickListener {
             if(binding.etSendUserId.text.toString().trim().isNotEmpty()&&
                 binding.etSendAddress.text.toString().trim().isNotEmpty()&&
-                binding.etSendPw.text.toString().trim().isNotEmpty()){
+                binding.etSendPw.text.toString().trim().isNotEmpty()) {
 
                 intent.flags = Intent.FLAG_ACTIVITY_NO_HISTORY // 이전 화면으로 못 돌아오도록
 
@@ -71,7 +72,7 @@ class Send2Activity : ComponentActivity() {
                 finish()
 
                 /***
-                 요청 보내고, 핀 번호 일치 해야 nft 전송, 알림페이지에 알림 추가.
+                요청 보내고, 핀 번호 일치 해야 nft 전송, 알림페이지에 알림 추가.
 
                 1. 요청
                 2-1. pin 번호 입력 -> 일치하면 nft 전송-> 알림창 추가
@@ -92,26 +93,39 @@ class Send2Activity : ComponentActivity() {
 
                 //선택된 nft의 토큰id 배열에 넣는 로직 추가해야함
                 /* for (배열 수만큼) {*/
-                mynft.transferNFT(tokenId[i], sendAddress)
-                    .sendAsync()
-                    .thenApply { transactionReceipt: TransactionReceipt? ->
-                    // 트랜잭션이 성공적으로 전송된 후 실행될 코드
-                        runOnUiThread {
-                            Toast.makeText(this@Send2Activity, "트랜잭션이 성공적으로 전송되었습니다.", Toast.LENGTH_SHORT).show()
+                val tokenId = arrayOf(1, 2, 3)
+                for (i in tokenId) {
+                    mynft.transferNFT(BigInteger.valueOf(i.toLong()), sendAddress)
+                        .sendAsync()
+                        .thenApply { transactionReceipt: TransactionReceipt? ->
+                            // 트랜잭션이 성공적으로 전송된 후 실행될 코드
+                            runOnUiThread {
+                                Toast.makeText(
+                                    this@Send2Activity,
+                                    "트랜잭션이 성공적으로 전송되었습니다.",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                            // 전송 완료 후 getTransferCount 함수 호출
+                            // val tokenId = transactionReceipt?.tokenId[i]
+                            // val transferCount = mynft.getTransferCount(tokenId).send()
+                            val transferCount = mynft.getTransferCount(BigInteger.valueOf(i.toLong()))
+                                .sendAsync()
+                                .get()
                         }
-                        // 전송 완료 후 getTransferCount 함수 호출
-                        val tokenId = transactionReceipt?.tokenId[i]
-                        val transferCount = mynft.getTransferCount(tokenId).send()
-                    }
-                    .exceptionally { throwable: Throwable? ->
-                    // 트랜잭션이 실패하거나 예외가 발생한 경우 실행될 코드
-                        runOnUiThread {
-                            Toast.makeText(this@Send2Activity, "트랜잭션 전송에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                        .exceptionally { throwable: Throwable? ->
+                            // 트랜잭션이 실패하거나 예외가 발생한 경우 실행될 코드
+                            runOnUiThread {
+                                Toast.makeText(
+                                    this@Send2Activity,
+                                    "트랜잭션 전송에 실패했습니다.",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                            null
                         }
-                        null
-                    }
                 }
-
+            }
                 else{ //지갑 주소, 이름, PIN 번호 입력 안 했을 경우
                 Toast.makeText(this, "정보를 모두 입력하세요.", Toast.LENGTH_SHORT).show()
                 }

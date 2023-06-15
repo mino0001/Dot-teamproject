@@ -149,7 +149,7 @@
                 android:maxLength="20"
                 android:background="@drawable/edittext_border"
                 android:layout_marginTop="5dp"
-                android:hint="구매 일자를 입력하세요"
+                android:hint="구매 일자를 입력하세요(8자리 숫자)"
                 android:paddingStart="5dp"
                 android:inputType="textPersonName"
                 android:textColor="@color/black"/>
@@ -184,6 +184,36 @@
                 android:maxLength="500"
                 android:maxLines="10"
                 android:padding="5dp"
+                android:textColor="@color/black" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="개인키 입력"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/et_private_key"
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
+                android:hint="개인키를 입력하세요"
+                android:inputType="textMultiLine"
+                android:layout_marginTop="10dp"
+                android:padding="5dp"
+                android:background="@drawable/edittext_border"
+                android:maxLength="500"
+                android:maxLines="10"
                 android:textColor="@color/black" />
 
         </LinearLayout>

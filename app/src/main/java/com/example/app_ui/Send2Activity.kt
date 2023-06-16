@@ -5,6 +5,10 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.WindowManager
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -31,6 +35,8 @@ class Send2Activity : ComponentActivity() {
     val web3j = Web3j.build(HttpService("https://eth-sepolia.g.alchemy.com/v2/musyAUHHyrKtOkx90Ygr7A-q7_1AYfLH"))
     val contractAddress = "0x8481b9693fFabb79463B03566af2391ef150f957"
     lateinit var mynft: MyNFT
+    private var loadingView: View? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,12 +73,10 @@ class Send2Activity : ComponentActivity() {
                 binding.etSendAddress.text.toString().trim().isNotEmpty()&&
                 binding.etSendPw.text.toString().trim().isNotEmpty()) {
 
-                intent.flags = Intent.FLAG_ACTIVITY_NO_HISTORY // 이전 화면으로 못 돌아오도록
 
-                val loadingIntent = Intent(this, LoadingActivity::class.java)
-                startActivity(loadingIntent)
+                showLoadingView()
                 Toast.makeText(this, "로딩중", Toast.LENGTH_SHORT).show()
-                finish()
+                //finish()
 
                 /***
                 요청 보내고, 핀 번호 일치 해야 nft 전송, 알림페이지에 알림 추가.
@@ -91,6 +95,8 @@ class Send2Activity : ComponentActivity() {
                 val memo = findViewById<EditText>(R.id.tv_memo).text.toString()
                 val privateKey = findViewById<EditText>(R.id.et_private_key).text.toString()
                 var newAlias = "(이름 없음)"
+                var nftCount = 0
+
 
                 var credentials = Credentials.create(privateKey)
                 mynft = MyNFT.load(contractAddress, web3j, credentials, DefaultGasProvider())
@@ -112,8 +118,8 @@ class Send2Activity : ComponentActivity() {
                                     Toast.LENGTH_SHORT
                                 ).show()
 
-                                val firebaseDatabase = FirebaseDatabase.getInstance()
-                                val reference = firebaseDatabase.getReference("users/${user_id}/nft")
+                                var firebaseDatabase = FirebaseDatabase.getInstance()
+                                var reference = firebaseDatabase.getReference("users/${user_id}/nft")
 
 
                                 for ((index, nft) in filteredList.withIndex()) {
@@ -129,19 +135,29 @@ class Send2Activity : ComponentActivity() {
 
                                 println("전송된 NFT 삭제완료")
 
-                                val databaseReference: DatabaseReference = firebaseDatabase.reference
+                                var databaseReference: DatabaseReference = firebaseDatabase.reference
 
-                                val userNftRef: DatabaseReference = databaseReference.child("users").child(userId).child("nft")
+                                var userNftRef: DatabaseReference = databaseReference.child("users").child(userId).child("nft")
 
                                 println("받은 NFT 저장중...")
 
                                 userNftRef.get()
                                     .addOnSuccessListener { dataSnapshot: DataSnapshot ->
-                                        val nftCount = dataSnapshot.childrenCount.toInt()
 
-                                        val forNewNftRef: DatabaseReference = userNftRef.child(nftCount.toString())
+                                        if(nftCount==0){
+                                            println("nftCount==0")
+                                            nftCount = dataSnapshot.childrenCount.toInt()
+                                        }
+                                        else{
+                                            println("nftCount!=0")
+                                            nftCount++
+                                        }
 
-                                        val nftData = NFTData(i.toString(), "전체", newAlias)
+                                        //val nftCount = dataSnapshot.childrenCount.toInt()
+
+                                        var forNewNftRef: DatabaseReference = userNftRef.child(nftCount.toString())
+
+                                        var nftData = NFTData(i.toString(), "전체", newAlias)
 
                                         println("생성된 NFT 저장중...")
 
@@ -150,6 +166,11 @@ class Send2Activity : ComponentActivity() {
                                                 // 저장 성공적으로 완료됨
                                                 println("생성된 NFT 저장 완료")
                                                 // 원하는 작업 수행
+                                            }
+                                            .addOnCompleteListener{
+                                                hideLoadingView()
+                                                intent.flags = Intent.FLAG_ACTIVITY_NO_HISTORY // 이전 화면으로 못 돌아오도록
+                                                //finish()
                                             }
                                             .addOnFailureListener {
                                                 // 저장 실패
@@ -176,6 +197,9 @@ class Send2Activity : ComponentActivity() {
                                     "트랜잭션 전송에 실패했습니다.",
                                     Toast.LENGTH_SHORT
                                 ).show()
+                                finish()
+//                                val intent = Intent(this, MainActivity::class.java)
+//                                startActivity(intent)
                             }
                             null
                         }
@@ -212,6 +236,34 @@ class Send2Activity : ComponentActivity() {
             }
         } else {
             Toast.makeText(this, "QR스캔에 실패했습니다.", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun showLoadingView() {
+        val inflater = LayoutInflater.from(this)
+        //startActivity(intent)
+
+        loadingView = inflater.inflate(R.layout.activity_loading, null)
+
+        val layoutParams = WindowManager.LayoutParams().apply {
+            width = WindowManager.LayoutParams.MATCH_PARENT
+            height = WindowManager.LayoutParams.MATCH_PARENT
+            gravity = Gravity.CENTER
+            flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+        }
+
+        windowManager.addView(loadingView, layoutParams)
+    }
+
+    private fun hideLoadingView() {
+        if (loadingView != null) {
+            windowManager.removeView(loadingView)
+            loadingView = null
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            finish()
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
         }
     }
 

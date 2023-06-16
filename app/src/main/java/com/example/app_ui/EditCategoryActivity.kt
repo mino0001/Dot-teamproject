@@ -14,7 +14,7 @@ import com.example.app_ui.databinding.ActivityEditCategoryBinding
 
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.firestore.FirebaseFirestore
+//import com.google.firebase.firestore.FirebaseFirestore
 import java.io.Serializable
 
 
@@ -102,7 +102,7 @@ class EditCategoryActivity : AppCompatActivity() {
         // 수정된 카테고리 정보를 Firebase에 업데이트하는 로직 작성
 
         // 예시: Firebase의 "categories" 컬렉션을 업데이트
-        val updatedCategories: ArrayList<String> = itemList
+        //val updatedCategories: ArrayList<String> = itemList
         val database = FirebaseDatabase.getInstance()
         val categoryRef = database.reference.child("users").child(user_id).child("category").child("cg_name")
 

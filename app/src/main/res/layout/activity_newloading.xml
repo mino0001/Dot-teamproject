@@ -22,13 +22,13 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="150dp"
             android:layout_gravity="center_horizontal"
-            android:text="NFT를 보내는 중 입니다."
+            android:text="NFT를 생성 중 입니다."
             android:textSize="30sp"
             android:textStyle="bold"
             />
 
         <ProgressBar
-            android:id="@+id/iv_loading"
+            android:id="@+id/iv_loading_new"
             android:layout_width="180dp"
             android:layout_height="180dp"
             android:layout_gravity="center"

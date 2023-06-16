@@ -18,11 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.app_ui.databinding.FragmentHomeBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlin.math.log
+
 
 
  val nftList = mutableListOf<Nft>()
@@ -37,8 +33,7 @@ class HomeFragment : Fragment() {
     private var fragmentHomeBinding : FragmentHomeBinding? =null
     private var intent :Intent? = null
     private var loadingDialog: Dialog? = null
-    private val PREFS_NAME = "MyPrefs"
-    private val PREF_FIRST_LAUNCH = "firstLaunch"
+
 
 
 
@@ -60,14 +55,8 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         var updatedCategories : ArrayList<String>? = null
 
-        var isFirstLaunchValue = isFirstLaunch()
-
-
-
-
         fragmentHomeBinding!!.toolbar.inflateMenu(R.menu.toolbar_menu)
         initRecycler()
-
 
 
         val arguments = arguments
@@ -80,9 +69,7 @@ class HomeFragment : Fragment() {
             )
             fragmentHomeBinding!!.spinnerCategory.adapter = adapter
         }else if (updatedCategories == null) {
-            if (isFirstLaunchValue) {
-                showLoadingDialog()
-            }
+            showLoadingDialog()
             setupCategorySpinnerHandler()
 
         }
@@ -145,11 +132,7 @@ class HomeFragment : Fragment() {
 
         val binding : FragmentHomeBinding = FragmentHomeBinding.inflate(inflater,container,false)
         fragmentHomeBinding = binding
-        val isFirstLaunchValue = isFirstLaunch()
 
-        if (isFirstLaunchValue) {
-            showLoadingDialog()
-        }
 
         return fragmentHomeBinding!!.root
     }
@@ -163,32 +146,13 @@ class HomeFragment : Fragment() {
         super.onDestroyView()
     }
 
-    private fun isFirstLaunch(): Boolean {
-        val sharedPref = requireActivity().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        var isFirstLaunch = sharedPref.getBoolean(PREF_FIRST_LAUNCH, true)
-
-        // 최초 실행 이후에는 값을 false로 업데이트합니다.
-        if (isFirstLaunch) {
-            val editor = sharedPref.edit()
-            editor.putBoolean(PREF_FIRST_LAUNCH, false)
-            editor.apply()
-            isFirstLaunch = false
-        }
-
-        return isFirstLaunch
-    }
     private fun showLoadingDialog() {
-        val scope = CoroutineScope(Dispatchers.Default)
 
         loadingDialog = Dialog(requireContext())
         loadingDialog?.setContentView(R.layout.activity_screen)
         loadingDialog?.setCancelable(false)
         loadingDialog?.show()
 
-        scope.launch {
-            delay(1000) // 3초 대기
-            loadingDialog?.dismiss()
-        }
     }
 
     fun initRecycler(){
@@ -278,10 +242,14 @@ class HomeFragment : Fragment() {
 
 
                     nftAdapter.notifyDataSetChanged()
+
+                    loadingDialog?.dismiss()
                 }
 
                 override fun onCancelled(error: DatabaseError) {
                     // Handle database error
+                    loadingDialog?.dismiss()
+
                 }
             }
 

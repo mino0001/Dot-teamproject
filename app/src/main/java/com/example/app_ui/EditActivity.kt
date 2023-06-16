@@ -106,7 +106,8 @@ class EditActivity : ComponentActivity() {
              * '전체' 말고 똑같이 만들어 놓은 categoryArray 불러서 사용하고 있음
              * 수정 필요!
              * ***/
-            builder.setItems(categoryArray,listener)
+
+            builder.setItems(categoryArray.sliceArray(1 until categoryArray.size),listener)
             builder.show()
 
 

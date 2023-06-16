@@ -25,9 +25,7 @@ class NotiActivity : AppCompatActivity() {
 
         binding.btnBack.setOnClickListener{
 
-            //finish() 처리할지 고민
-            var intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+            finish()
         }
 
     }

@@ -2,6 +2,7 @@ package com.example.app_ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.TextView
 import com.example.app_ui.databinding.ActivityLoadingBinding
 
 // 전송하기 -> 로딩 화면

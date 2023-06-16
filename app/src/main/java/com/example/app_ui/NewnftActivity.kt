@@ -1,6 +1,12 @@
 package com.example.app_ui
 
+import android.app.ProgressDialog
+import android.content.Intent
 import android.os.Bundle
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.WindowManager
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -44,6 +50,8 @@ class NewnftActivity : ComponentActivity(){
     val web3j = Web3j.build(HttpService("https://eth-sepolia.g.alchemy.com/v2/musyAUHHyrKtOkx90Ygr7A-q7_1AYfLH"))
     val contractAddress = "0x8481b9693fFabb79463B03566af2391ef150f957"
     lateinit var mynft: MyNFT
+    private var loadingView: View? = null
+
 
     private fun createNft(
         brand: String, modelName: String, manufacturer: String,
@@ -109,12 +117,16 @@ class NewnftActivity : ComponentActivity(){
                     val nftData = NFTData(tokenId.toString(), "전체", new_alias)
 
                     println("생성된 NFT 저장중...")
+//
 
                     forNewNftRef.setValue(nftData)
                         .addOnSuccessListener {
                             // 저장 성공적으로 완료됨
                             println("생성된 NFT 저장 완료")
                             // 원하는 작업 수행
+                        }
+                        .addOnCompleteListener {
+                            hideLoadingView()
                         }
                         .addOnFailureListener {
                             // 저장 실패
@@ -131,6 +143,31 @@ class NewnftActivity : ComponentActivity(){
         }
     }
 
+    private fun showLoadingView() {
+        val inflater = LayoutInflater.from(this)
+
+        loadingView = inflater.inflate(R.layout.activity_newloading, null)
+
+        val layoutParams = WindowManager.LayoutParams().apply {
+            width = WindowManager.LayoutParams.MATCH_PARENT
+            height = WindowManager.LayoutParams.MATCH_PARENT
+            gravity = Gravity.CENTER
+            flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+        }
+
+        windowManager.addView(loadingView, layoutParams)
+    }
+
+    private fun hideLoadingView() {
+        if (loadingView != null) {
+            windowManager.removeView(loadingView)
+            loadingView = null
+            finish()
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -141,21 +178,42 @@ class NewnftActivity : ComponentActivity(){
 
         // 생성 버튼
         binding.btnNewMake.setOnClickListener {
-            val brand = findViewById<EditText>(R.id.et_brand).text.toString()
-            val modelName = findViewById<EditText>(R.id.et_model_name).text.toString()
-            val manufacturer = findViewById<EditText>(R.id.et_manufacturer).text.toString()
-            val purchaseSource = findViewById<EditText>(R.id.et_po).text.toString()
-            val purchaseDate =
-                BigInteger(findViewById<EditText>(R.id.et_date_purchase).text.toString())
-            val additionalInfo = findViewById<EditText>(R.id.tv_new_memo).text.toString()
-            val privateKey = findViewById<EditText>(R.id.et_private_key).text.toString()
-            val alias = findViewById<EditText>(R.id.et_new_alias).text.toString()
+            if (binding.etBrand.text.toString().trim().isNotEmpty() &&
+                binding.etModelName.text.toString().trim().isNotEmpty() &&
+                binding.etManufacturer.text.toString().trim().isNotEmpty()&&
+                binding.etPo.text.toString().trim().isNotEmpty() &&
+                binding.etDatePurchase.text.toString().trim().isNotEmpty() &&
+                binding.etPrivateKey.text.toString().trim().isNotEmpty()
+            ) {
 
-            val credentials = Credentials.create(privateKey)
+                showLoadingView()
+                val brand = findViewById<EditText>(R.id.et_brand).text.toString()
+                val modelName = findViewById<EditText>(R.id.et_model_name).text.toString()
+                val manufacturer = findViewById<EditText>(R.id.et_manufacturer).text.toString()
+                val purchaseSource = findViewById<EditText>(R.id.et_po).text.toString()
+                val purchaseDate =
+                    BigInteger(findViewById<EditText>(R.id.et_date_purchase).text.toString())
+                val additionalInfo = findViewById<EditText>(R.id.tv_new_memo).text.toString()
+                val privateKey = findViewById<EditText>(R.id.et_private_key).text.toString()
+                val alias = findViewById<EditText>(R.id.et_new_alias).text.toString()
 
-            new_alias = if (alias.trim().isNotEmpty()) alias.trim() else "(이름 없음)"
-            mynft = MyNFT.load(contractAddress, web3j, credentials, DefaultGasProvider())
-            createNft(brand, modelName, manufacturer, purchaseSource, purchaseDate, additionalInfo)
+                val credentials = Credentials.create(privateKey)
+
+                new_alias = if (alias.trim().isNotEmpty()) alias.trim() else "(이름 없음)"
+                mynft = MyNFT.load(contractAddress, web3j, credentials, DefaultGasProvider())
+                createNft(
+                    brand,
+                    modelName,
+                    manufacturer,
+                    purchaseSource,
+                    purchaseDate,
+                    additionalInfo
+                )
+            }
+            else{ //지갑 주소, 이름, PIN 번호 입력 안 했을 경우
+                Toast.makeText(this, "정보를 모두 입력하세요.", Toast.LENGTH_SHORT).show()
+            }
+
         }
 
         //취소 버튼

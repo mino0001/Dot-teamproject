@@ -127,7 +127,7 @@ class NftinfoActivity : ComponentActivity() {
 
         //확인 버튼 클릭 시 updateNftCategoryInFirebase 함수 호출
         binding!!.btnInfoSubmit.setOnClickListener {
-            binding!!.btnInfoSubmit.setOnClickListener {
+
                 val selectedValue = binding!!.spinnerNftinfoCategory.selectedItem as String
                 val position = intent.getIntExtra("position", -1)
                 nftList[position].category = selectedValue
@@ -137,7 +137,7 @@ class NftinfoActivity : ComponentActivity() {
 
                 finish()
 
-            }
+
 
 
             /***

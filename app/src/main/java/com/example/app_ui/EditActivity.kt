@@ -10,7 +10,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.app_ui.databinding.ActivityEditBinding
-import com.example.app_ui.databinding.ActivityToolbarBinding
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
@@ -107,7 +106,7 @@ class EditActivity : ComponentActivity() {
              * 수정 필요!
              * ***/
 
-            builder.setItems(categoryArray.sliceArray(1 until categoryArray.size),listener)
+            builder.setItems(categoryArray,listener)
             builder.show()
 
 

@@ -91,6 +91,7 @@ class Send2Activity : ComponentActivity() {
                 val memo = findViewById<EditText>(R.id.tv_memo).text.toString()
                 val privateKey = findViewById<EditText>(R.id.et_private_key).text.toString()
                 var newAlias = "(이름 없음)"
+                var nftCount = 0
 
                 var credentials = Credentials.create(privateKey)
                 mynft = MyNFT.load(contractAddress, web3j, credentials, DefaultGasProvider())
@@ -99,7 +100,7 @@ class Send2Activity : ComponentActivity() {
                 /* for (배열 수만큼) {*/
                 val tokenId = filteredList.map { it.more.toInt() }.toTypedArray()
 
-
+                nftCount = 0
                 for (i in tokenId) {
                     mynft.transferNFT(BigInteger.valueOf(i.toLong()), sendAddress)
                         .sendAsync()
@@ -112,13 +113,16 @@ class Send2Activity : ComponentActivity() {
                                     Toast.LENGTH_SHORT
                                 ).show()
 
-                                val firebaseDatabase = FirebaseDatabase.getInstance()
-                                val reference = firebaseDatabase.getReference("users/${user_id}/nft")
+                                var firebaseDatabase = FirebaseDatabase.getInstance()
+                                var reference = firebaseDatabase.getReference("users/${user_id}/nft")
 
+
+                                println("print : " + i)
 
                                 for ((index, nft) in filteredList.withIndex()) {
                                     if (nft.more.toInt() == i) {
                                         newAlias = nft.alias.toString()
+                                        println("newAlias : " + newAlias)
                                         reference.child((nft.id-1).toString()).removeValue()
                                         filteredList.removeAt(index)
                                         adapter.notifyItemRemoved(index)
@@ -129,19 +133,29 @@ class Send2Activity : ComponentActivity() {
 
                                 println("전송된 NFT 삭제완료")
 
-                                val databaseReference: DatabaseReference = firebaseDatabase.reference
+                                var databaseReference: DatabaseReference = firebaseDatabase.reference
 
-                                val userNftRef: DatabaseReference = databaseReference.child("users").child(userId).child("nft")
+                                var userNftRef: DatabaseReference = databaseReference.child("users").child(userId).child("nft")
 
                                 println("받은 NFT 저장중...")
 
                                 userNftRef.get()
                                     .addOnSuccessListener { dataSnapshot: DataSnapshot ->
-                                        val nftCount = dataSnapshot.childrenCount.toInt()
 
-                                        val forNewNftRef: DatabaseReference = userNftRef.child(nftCount.toString())
+                                        if(nftCount==0){
+                                            println("nftCount==0")
+                                            nftCount = dataSnapshot.childrenCount.toInt()
+                                        }
+                                        else{
+                                            println("nftCount!=0")
+                                            nftCount++
+                                        }
 
-                                        val nftData = NFTData(i.toString(), "전체", newAlias)
+                                        var forNewNftRef: DatabaseReference = userNftRef.child(nftCount.toString())
+
+                                        println("nftCount : " + nftCount)
+
+                                        var nftData = NFTData(i.toString(), "전체", newAlias)
 
                                         println("생성된 NFT 저장중...")
 
@@ -149,7 +163,9 @@ class Send2Activity : ComponentActivity() {
                                             .addOnSuccessListener {
                                                 // 저장 성공적으로 완료됨
                                                 println("생성된 NFT 저장 완료")
+
                                                 // 원하는 작업 수행
+
                                             }
                                             .addOnFailureListener {
                                                 // 저장 실패
@@ -158,8 +174,10 @@ class Send2Activity : ComponentActivity() {
                                     }
 
 
-
                             }
+
+
+
 
                             // 전송 완료 후 getTransferCount 함수 호출
                             // val tokenId = transactionReceipt?.tokenId[i]
@@ -179,11 +197,60 @@ class Send2Activity : ComponentActivity() {
                             }
                             null
                         }
+
+
                 }
+
+
+
             }
                 else{ //지갑 주소, 이름, PIN 번호 입력 안 했을 경우
                 Toast.makeText(this, "정보를 모두 입력하세요.", Toast.LENGTH_SHORT).show()
                 }
+
+            reset = 1
+            //파이어베이스 갱신
+            /*val firebaseDatabase = FirebaseDatabase.getInstance()
+            val databaseReference: DatabaseReference = firebaseDatabase.reference
+            val userNftRef: DatabaseReference = databaseReference.child("users").child(user_id).child("nft")
+
+            userNftRef.get().addOnSuccessListener { dataSnapshot: DataSnapshot ->
+                val nftList2 = mutableListOf<NFTData>()
+
+                // 기존 nft 데이터를 불러와서 NFTData 배열에 저장
+                for (childSnapshot in dataSnapshot.children) {
+                    val nftData = childSnapshot.getValue(NFTData::class.java)
+                    if (nftData != null) {
+                        nftList2.add(nftData)
+                    }
+                }
+
+                println("hello reset!")
+                // 기존 nft 데이터 삭제
+                userNftRef.removeValue()
+
+                // 새로운 nft 데이터 추가
+                for (index in 0 until nftList2.size) {
+                    val newNftRef: DatabaseReference = userNftRef.child(index.toString())
+
+                    println("hello for reset!")
+                    val nftData = NFTData(
+                        nftList2[index].nft_hash,
+                        nftList2[index].nft_cg,
+                        nftList2[index].nft_alias
+                    )
+
+                    newNftRef.setValue(nftData)
+                        .addOnSuccessListener {
+                            // 저장 성공적으로 완료됨
+                            println("NFT 저장 완료")
+                        }
+                        .addOnFailureListener {
+                            // 저장 실패
+                            // 에러 처리 등 필요한 작업 수행
+                        }
+                }
+            }*/
 
         }
 

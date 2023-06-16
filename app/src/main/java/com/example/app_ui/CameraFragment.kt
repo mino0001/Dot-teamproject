@@ -80,7 +80,7 @@ class CameraFragment : Fragment() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
+        //super.onActivityResult(requestCode, resultCode, data)
 
         val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
         if (result != null) {
